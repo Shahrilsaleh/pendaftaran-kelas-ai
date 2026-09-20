@@ -14,7 +14,6 @@
       --void-black: #000002;
       --accretion-orange: #ff7b00;
       --accretion-gold: #ffbe3b;
-      --hologram-cyan: #00f0ff;
       --panel-bg: rgba(5, 8, 16, 0.85);
       --border-line: rgba(255, 190, 59, 0.4);
     }
@@ -40,7 +39,6 @@
       position: relative;
     }
 
-    /* Kanvas 3D Lohong Hitam */
     #universe-canvas {
       position: fixed;
       top: 0;
@@ -51,7 +49,6 @@
       pointer-events: auto;
     }
 
-    /* Kilauan Cahaya Putih Singularity (White Hole Flash) */
     #singularity-flash {
       position: fixed;
       top: 0;
@@ -65,7 +62,6 @@
       transition: opacity 0.4s ease-out;
     }
 
-    /* Kad Borang Kaca Futuristik */
     .viewport-box {
       width: 100%;
       max-width: 480px;
@@ -89,10 +85,10 @@
       border-color: var(--accretion-gold);
       pointer-events: none;
     }
-    .top-left { top: 8px; left: 8px; border-top: 2px solid; border-left: 2px solid; }
-    .top-right { top: 8px; right: 8px; border-top: 2px solid; border-right: 2px solid; }
-    .bottom-left { bottom: 8px; left: 8px; border-bottom: 2px solid; border-left: 2px solid; }
-    .bottom-right { bottom: 8px; right: 8px; border-bottom: 2px solid; border-right: 2px solid; }
+    .top-left { top: 8px; left: 8px; border-top: 1.5px solid; border-left: 1.5px solid; }
+    .top-right { top: 8px; right: 8px; border-top: 1.5px solid; border-right: 1.5px solid; }
+    .bottom-left { bottom: 8px; left: 8px; border-bottom: 1.5px solid; border-left: 1.5px solid; }
+    .bottom-right { bottom: 8px; right: 8px; border-bottom: 1.5px solid; border-right: 1.5px solid; }
 
     /* ================= 0. GATEWAY SCREEN ================= */
     #start-gateway {
@@ -163,44 +159,58 @@
       box-shadow: 0 0 30px rgba(255, 123, 0, 0.6);
     }
 
-    /* ================= 1. TRANSITION STATUS ================= */
+    /* ================= 1. TRANSITION STATUS & LOADING 0-100% ================= */
     #warp-hud {
       display: none;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 150px;
+      min-height: 160px;
       text-align: center;
+    }
+
+    .percent-display {
+      font-family: 'Consolas', monospace;
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--accretion-gold);
+      text-shadow: 0 0 15px rgba(255, 190, 59, 0.6);
+      letter-spacing: 2px;
+      margin-bottom: 4px;
     }
 
     .holo-text {
       font-family: 'Consolas', monospace;
-      font-size: 13px;
-      color: #fff;
+      font-size: 11px;
+      color: #cbd5e1;
       font-weight: 600;
       letter-spacing: 1.5px;
+      text-transform: uppercase;
     }
 
     .holo-sub {
-      font-size: 11px;
-      color: var(--accretion-gold);
+      font-size: 10px;
+      color: var(--accretion-orange);
       margin-top: 6px;
       font-family: monospace;
       letter-spacing: 1px;
     }
 
     .progress-bar-wrap {
-      width: 180px;
-      height: 2px;
-      background: rgba(255, 255, 255, 0.1);
-      margin: 16px auto 0 auto;
+      width: 220px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 2px;
+      margin: 14px auto 0 auto;
       overflow: hidden;
+      border: 1px solid rgba(255, 190, 59, 0.3);
     }
 
     .progress-bar-inner {
       width: 0%;
       height: 100%;
       background: linear-gradient(90deg, var(--accretion-orange), var(--accretion-gold));
+      box-shadow: 0 0 10px var(--accretion-gold);
     }
 
     /* ================= 2. BORANG PENDAFTARAN ================= */
@@ -330,10 +340,11 @@
     <button class="gateway-btn" onclick="enterBlackHole()">Daftar Sekarang</button>
   </div>
 
-  <!-- STATUS MENEMBUSI LOHONG HITAM -->
+  <!-- STATUS & KIRAAN LOADING PERATUSAN 0% - 100% -->
   <div id="warp-hud">
-    <div class="holo-text" id="holo-status">FALLING TOWARDS SINGULARITY...</div>
-    <div class="holo-sub" id="holo-sub">GRAVITATIONAL TIME DILATION 99.8%</div>
+    <div class="percent-display" id="percent-val">0%</div>
+    <div class="holo-text" id="holo-status">TRAVERSING EVENT HORIZON</div>
+    <div class="holo-sub" id="holo-sub">GRAVITATIONAL TIME DILATION: ACTIVE</div>
     <div class="progress-bar-wrap">
       <div class="progress-bar-inner" id="progress-bar"></div>
     </div>
@@ -374,7 +385,7 @@
 </div>
 
 <script>
-  /* ================= 1. THREE.JS 3D BLACK HOLE SCENE ================= */
+  /* ================= 1. THREE.JS 3D BLACK HOLE ================= */
   const canvas = document.getElementById('universe-canvas');
   const scene = new THREE.Scene();
   
@@ -385,17 +396,16 @@
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-  // Kumpulan Objek Lohong Hitam
   const blackHoleGroup = new THREE.Group();
   scene.add(blackHoleGroup);
 
-  // Sfera Gelap (Event Horizon)
+  // Sfera Pusat
   const holeGeo = new THREE.SphereGeometry(3.2, 48, 48);
   const holeMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
   const blackHole = new THREE.Mesh(holeGeo, holeMat);
   blackHoleGroup.add(blackHole);
 
-  // Gelang Foton Cahaya (Photon Ring)
+  // Gelang Foton Cahaya
   const photonGeo = new THREE.RingGeometry(3.22, 3.48, 64);
   const photonMat = new THREE.MeshBasicMaterial({
     color: 0xffe29a,
@@ -406,7 +416,7 @@
   const photonRing = new THREE.Mesh(photonGeo, photonMat);
   blackHoleGroup.add(photonRing);
 
-  // Cakera Akresi Plasma (Accretion Disk)
+  // Cakera Akresi Plasma
   const diskParticleCount = 3000;
   const diskGeo = new THREE.BufferGeometry();
   const diskPositions = new Float32Array(diskParticleCount * 3);
@@ -470,7 +480,7 @@
   const starField = new THREE.Points(starGeo, starMat);
   scene.add(starField);
 
-  // Kawalan Sentuhan Tetikus / Telefon
+  // Kawalan Sentuhan
   let mouseX = 0, mouseY = 0;
   let isTraversing = false;
 
@@ -512,51 +522,70 @@
   }
   animate();
 
-  /* ================= 2. AUDIO KOSMIK SUB-BASS TENANG ================= */
+  /* ================= 2. AUDIO KOSMIK DENGUNGAN GRAVITI ================= */
   let audioCtx = null;
-  function getAudio() {
+  function initAudio() {
     if (!audioCtx) {
       const AudioClass = window.AudioContext || window.webkitAudioContext;
       if (AudioClass) audioCtx = new AudioClass();
     }
-    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+    if (audioCtx && audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
     return audioCtx;
   }
 
-  function playDeepCosmicPull() {
+  function playCosmicSwell() {
     try {
-      const ctx = getAudio();
+      const ctx = initAudio();
       if (!ctx) return;
       const now = ctx.currentTime;
 
-      // Suara dengungan gravitasi mendalam yang meningkat lalu meledak halus
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
+      // Osilator 1: Nada Utama Rendah (Sine)
+      const osc1 = ctx.createOscillator();
+      const gain1 = ctx.createGain();
+      osc1.type = 'sine';
+      osc1.frequency.setValueAtTime(65, now);
+      osc1.frequency.exponentialRampToValueAtTime(140, now + 2.2);
 
-      osc.type = 'sine';
-      osc.frequency.setValueAtTime(40, now);
-      osc.frequency.exponentialRampToValueAtTime(110, now + 1.8);
+      gain1.gain.setValueAtTime(0.01, now);
+      gain1.gain.linearRampToValueAtTime(0.2, now + 1.2); // Volum jelas kedengaran
+      gain1.gain.exponentialRampToValueAtTime(0.001, now + 2.8);
 
-      gain.gain.setValueAtTime(0.001, now);
-      gain.gain.linearRampToValueAtTime(0.06, now + 1.0);
-      gain.gain.exponentialRampToValueAtTime(0.001, now + 2.5);
+      osc1.connect(gain1);
+      gain1.connect(ctx.destination);
+      osc1.start(now);
+      osc1.stop(now + 2.8);
 
-      osc.connect(gain);
-      gain.connect(ctx.destination);
+      // Osilator 2: Gemuruh Graviti (Triangle Sub)
+      const osc2 = ctx.createOscillator();
+      const gain2 = ctx.createGain();
+      osc2.type = 'triangle';
+      osc2.frequency.setValueAtTime(40, now);
+      osc2.frequency.linearRampToValueAtTime(80, now + 2.2);
 
-      osc.start(now);
-      osc.stop(now + 2.5);
-    } catch(e) {}
+      gain2.gain.setValueAtTime(0.01, now);
+      gain2.gain.linearRampToValueAtTime(0.15, now + 1.4);
+      gain2.gain.exponentialRampToValueAtTime(0.001, now + 2.8);
+
+      osc2.connect(gain2);
+      gain2.connect(ctx.destination);
+      osc2.start(now);
+      osc2.stop(now + 2.8);
+    } catch(e) {
+      console.log('Audio error:', e);
+    }
   }
 
-  /* ================= 3. ANIMASI TEMBUS LOHONG HITAM (BREAKTHROUGH) ================= */
+  /* ================= 3. TRANSISI MASUK & KIRAAN LOADING 0-100% ================= */
   function enterBlackHole() {
-    getAudio();
-    playDeepCosmicPull();
+    initAudio();
+    playCosmicSwell();
 
     isTraversing = true;
     const gateway = document.getElementById('start-gateway');
     const warpHud = document.getElementById('warp-hud');
+    const percentVal = document.getElementById('percent-val');
     const progressBar = document.getElementById('progress-bar');
     const holoStatus = document.getElementById('holo-status');
     const holoSub = document.getElementById('holo-sub');
@@ -565,45 +594,52 @@
     gateway.style.display = 'none';
     warpHud.style.display = 'flex';
 
-    // 1. Pecutan Terus Menembusi Pusat (Kamera maju ke z = 0 tanpa berpatah balik)
+    // Pecutan Kamera Menembusi Pusat
     gsap.to(camera.position, {
       z: 0.5,
       y: 0,
       x: 0,
-      duration: 1.9,
+      duration: 2.2,
       ease: 'power3.in'
     });
 
-    // Cakera akresi berpusing laju seakan ditarik ke dalam singularity
     gsap.to({ speed: 0.008 }, {
       speed: 0.08,
-      duration: 1.9,
+      duration: 2.2,
       onUpdate: function() {
         diskSpinSpeed = this.targets()[0].speed;
       }
     });
 
-    let percent = 0;
+    let currentPercent = 0;
     const interval = setInterval(() => {
-      percent += 2;
-      progressBar.style.width = percent + '%';
+      currentPercent += 2;
+      
+      // Kemas kini angka peratusan dan bar progres secara masa nyata
+      percentVal.innerText = currentPercent + '%';
+      progressBar.style.width = currentPercent + '%';
 
-      if (percent === 45) {
-        holoStatus.innerText = 'SINGULARITY INEVITABLE';
-        holoSub.innerText = 'SPACETIME COMPRESSION: MAXIMUM';
+      if (currentPercent === 36) {
+        holoStatus.innerText = 'APPROACHING SINGULARITY';
+        holoSub.innerText = 'SPACETIME COMPRESSION IN PROGRESS...';
+      }
+      if (currentPercent === 74) {
+        holoStatus.innerText = 'PENETRATING EVENT HORIZON';
+        holoSub.innerText = 'PHOTON RING SHIFT: CRITICAL';
       }
 
-      if (percent >= 100) {
+      if (currentPercent >= 100) {
         clearInterval(interval);
-        
-        // 2. KILAUAN CAHAYA PUTIH (WHITE HOLE DISRUPTION)
+        percentVal.innerText = '100%';
+        holoStatus.innerText = 'TRAVERSAL COMPLETE';
+        holoSub.innerText = 'WELCOME TO MIRACLE LIFE TECHNOLOGY';
+
+        // Kilauan Cahaya Putih (White Hole Emergence)
         flash.style.opacity = '1';
 
         setTimeout(() => {
-          // Sorokkan lohong hitam semasa skrin putih penuh (tidak akan nampak ia terundur)
           blackHoleGroup.visible = false;
           
-          // Tukar latar kepada angkasa bintang kuantum tenang
           camera.position.set(0, 0, 18);
           camera.lookAt(0, 0, 0);
 
@@ -611,7 +647,6 @@
           const formScreen = document.getElementById('form-screen');
           formScreen.style.display = 'block';
 
-          // Pudarkan kilauan putih secara perlahan untuk mendedahkan borang
           flash.style.opacity = '0';
 
           setTimeout(() => {
@@ -622,7 +657,7 @@
 
         }, 400);
       }
-    }, 32);
+    }, 40); // 40ms * 50 ticks = ~2.0 saat masa pemuatan
   }
 
   /* ================= 4. PENGHANTARAN BORANG (NO-CORS) ================= */
