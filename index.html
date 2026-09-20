@@ -10,12 +10,11 @@
 
   <style>
     :root {
-      --space-black: #01040a;
+      --space-black: #010308;
       --neon-cyan: #00f0ff;
       --neon-blue: #0070f3;
       --neon-magenta: #ff0070;
-      --neon-orange: #ff7700;
-      --panel-glass: rgba(5, 11, 24, 0.76);
+      --panel-glass: rgba(5, 10, 22, 0.78);
       --border-cyan: rgba(0, 240, 255, 0.4);
     }
 
@@ -33,9 +32,9 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end; /* Letak borang di bawah supaya Bumi & Roket 3D jelas di atas */
+      justify-content: flex-end;
       align-items: center;
-      padding: 16px;
+      padding: 14px;
       overflow: hidden;
       position: relative;
     }
@@ -58,14 +57,14 @@
       background: var(--panel-glass);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border-radius: 22px;
+      border-radius: 20px;
       border: 1px solid var(--border-cyan);
-      box-shadow: 0 0 35px rgba(0, 240, 255, 0.22), 0 0 70px rgba(0, 112, 243, 0.2);
+      box-shadow: 0 0 35px rgba(0, 240, 255, 0.22), 0 0 60px rgba(255, 0, 112, 0.15);
       position: relative;
       z-index: 2;
       overflow: hidden;
-      padding: 22px 18px;
-      margin-bottom: 8px;
+      padding: 20px 18px;
+      margin-bottom: 6px;
       transition: all 0.4s ease;
     }
 
@@ -87,30 +86,30 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 220px;
+      min-height: 200px;
       text-align: center;
       padding: 10px;
     }
 
     .gateway-logo {
-      width: 55px;
-      height: 55px;
+      width: 52px;
+      height: 52px;
       margin-bottom: 12px;
       filter: drop-shadow(0 0 16px var(--neon-cyan));
     }
 
     .gateway-btn {
-      padding: 15px 36px;
+      padding: 14px 34px;
       background: transparent;
       border: 2px solid var(--neon-cyan);
       border-radius: 30px;
       color: var(--neon-cyan);
-      font-size: 15px;
+      font-size: 14px;
       font-weight: 800;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       cursor: pointer;
-      box-shadow: 0 0 22px rgba(0, 240, 255, 0.35), inset 0 0 15px rgba(0, 240, 255, 0.2);
+      box-shadow: 0 0 20px rgba(0, 240, 255, 0.35), inset 0 0 15px rgba(0, 240, 255, 0.2);
       transition: all 0.3s;
       animation: pulseBtn 1.4s infinite alternate;
     }
@@ -131,7 +130,7 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 160px;
+      min-height: 150px;
       text-align: center;
     }
 
@@ -156,7 +155,7 @@
     .holo-sub {
       font-size: 11px;
       color: var(--neon-cyan);
-      margin-top: 6px;
+      margin-top: 5px;
       font-family: monospace;
       letter-spacing: 1px;
     }
@@ -166,7 +165,7 @@
       height: 4px;
       background: rgba(255, 255, 255, 0.12);
       border-radius: 2px;
-      margin: 14px auto 0 auto;
+      margin: 12px auto 0 auto;
       overflow: hidden;
       border: 1px solid rgba(0, 240, 255, 0.4);
     }
@@ -212,7 +211,7 @@
     .desc {
       font-size: 11px;
       color: #94a3b8;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
       line-height: 1.4;
     }
 
@@ -231,10 +230,10 @@
 
     input {
       width: 100%;
-      padding: 11px 13px;
+      padding: 10px 12px;
       background: rgba(2, 6, 18, 0.88);
       border: 1px solid rgba(0, 240, 255, 0.25);
-      border-radius: 9px;
+      border-radius: 8px;
       color: #ffffff;
       font-size: 13px;
       outline: none;
@@ -248,11 +247,11 @@
 
     button.btn-submit {
       width: 100%;
-      padding: 14px;
+      padding: 13px;
       margin-top: 6px;
       background: linear-gradient(135deg, #00f0ff 0%, #0070f3 50%, #ff0070 100%);
       border: none;
-      border-radius: 9px;
+      border-radius: 8px;
       color: #ffffff;
       font-size: 13px;
       font-weight: 700;
@@ -277,9 +276,9 @@
 
     @media (min-width: 481px) {
       body { justify-content: center; }
-      .viewport-box { padding: 26px 22px; margin-bottom: 0; }
-      h1 { font-size: 23px; }
-      .desc { font-size: 12px; margin-bottom: 18px; }
+      .viewport-box { padding: 24px 20px; margin-bottom: 0; }
+      h1 { font-size: 22px; }
+      .desc { font-size: 12px; margin-bottom: 16px; }
     }
   </style>
 </head>
@@ -296,20 +295,21 @@
   <!-- GATEWAY INTERAKTIF -->
   <div id="start-gateway">
     <svg class="gateway-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="50" cy="50" r="38" stroke="#00f0ff" stroke-width="2.5" stroke-dasharray="6 4"/>
-      <circle cx="50" cy="50" r="22" fill="#0070f3" opacity="0.4"/>
-      <path d="M30 50 L70 50 M50 30 L50 70" stroke="#00f0ff" stroke-width="1.5"/>
+      <polygon points="50,10 85,30 85,70 50,90 15,70 15,30" stroke="#00f0ff" stroke-width="2.5"/>
+      <rect x="35" y="38" width="30" height="20" rx="3" stroke="#ff0070" stroke-width="2"/>
+      <line x1="50" y1="58" x2="50" y2="68" stroke="#00f0ff" stroke-width="2"/>
+      <line x1="42" y1="68" x2="58" y2="68" stroke="#00f0ff" stroke-width="2"/>
     </svg>
-    <div style="font-size: 17px; font-weight: 800; margin-bottom: 5px; letter-spacing: 1px; color: #fff;">PENDAFTARAN KELAS AI 3D</div>
-    <div style="font-size: 12px; color: #94a3b8; margin-bottom: 20px;">Sentuh skrin untuk mengawal pandangan orbit Bumi & Roket.</div>
+    <div style="font-size: 17px; font-weight: 800; margin-bottom: 5px; letter-spacing: 1px; color: #fff;">AI FUTURE WORKSTATION 3D</div>
+    <div style="font-size: 12px; color: #94a3b8; margin-bottom: 18px;">Sentuh skrin untuk mengawal sudut pandangan Robot & Skrin PC.</div>
     <button class="gateway-btn" onclick="start3DUplink()">Daftar Sekarang</button>
   </div>
 
   <!-- INTRO TELEMETRY HUD -->
   <div id="intro-screen">
-    <div class="hud-title">ORBITAL SYNCHRONIZATION // IN PROGRESS</div>
-    <div class="holo-text" id="holo-status">ROCKET ENTERING EARTH ORBIT</div>
-    <div class="holo-sub" id="holo-sub">TRANSMITTING AI TELEMETRY DATA...</div>
+    <div class="hud-title">NEURAL WORKSTATION // LINKED</div>
+    <div class="holo-text" id="holo-status">HUMANOID AI SYSTEM ACTIVE</div>
+    <div class="holo-sub" id="holo-sub">ACCESSING 3-SCREEN QUANTUM TERMINAL...</div>
     <div class="progress-bar-wrap">
       <div class="progress-bar-inner" id="progress-bar"></div>
     </div>
@@ -350,141 +350,182 @@
 </div>
 
 <script>
-  /* ================= 1. THREE.JS 3D PLANET & ROCKET SETUP ================= */
+  /* ================= 1. THREE.JS FUTURE WORKSTATION SCENE ================= */
   const canvas = document.getElementById('webgl-canvas');
   const scene = new THREE.Scene();
   
+  // Kamera memandang dari sudut condong sedikit ke atas
   const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.set(0, 2, 22);
+  camera.position.set(0, 4.5, 17);
 
   const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-  // Pencahayaan
-  const ambientLight = new THREE.AmbientLight(0x0a192f, 2.5);
+  // Pencahayaan Cyberpunk
+  const ambientLight = new THREE.AmbientLight(0x061124, 2.5);
   scene.add(ambientLight);
 
-  const sunLight = new THREE.DirectionalLight(0xffffff, 2.8);
-  sunLight.position.set(15, 12, 18);
-  scene.add(sunLight);
+  const cyanKey = new THREE.PointLight(0x00f0ff, 4.5, 60);
+  cyanKey.position.set(-8, 9, 8);
+  scene.add(cyanKey);
 
-  const blueGlow = new THREE.PointLight(0x00f0ff, 4, 50);
-  blueGlow.position.set(-12, 8, 10);
-  scene.add(blueGlow);
+  const magentaFill = new THREE.PointLight(0xff0070, 4.5, 60);
+  magentaFill.position.set(8, 7, 8);
+  scene.add(magentaFill);
 
-  // KUMPULAN BUMI 3D (EARTH SYSTEM)
-  const earthSystem = new THREE.Group();
-  // Letak Bumi di bahagian atas skrin (y = 5.5) supaya sentiasa bebas kelihatan di atas kotak borang
-  earthSystem.position.set(0, 5.8, 0);
-  scene.add(earthSystem);
+  // KUMPULAN WORKSTATION 3D (ROBOT + 3 SKRIN)
+  const workstation = new THREE.Group();
+  // Kedudukan di atas borang supaya jelas kelihatan pada skrin telefon
+  workstation.position.set(0, 4.6, 0);
+  scene.add(workstation);
 
-  // 1.1 Sfera Utama Bumi (Ocean Globe)
-  const earthGeo = new THREE.SphereGeometry(3.6, 48, 48);
-  const earthMat = new THREE.MeshStandardMaterial({
-    color: 0x051d40,
-    roughness: 0.3,
-    metalness: 0.8,
-    emissive: 0x020d20
-  });
-  const earthMesh = new THREE.Mesh(earthGeo, earthMat);
-  earthSystem.add(earthMesh);
+  /* 1.1 ROBOT HUMANOID 3D */
+  const robotGroup = new THREE.Group();
+  robotGroup.position.set(0, -0.5, -2.8); // Duduk di belakang skrin menghadap ke arah hadapan
 
-  // 1.2 Grid Benua Hologram (Holographic Wireframe Grid)
-  const gridGeo = new THREE.SphereGeometry(3.64, 28, 28);
-  const gridMat = new THREE.MeshBasicMaterial({
-    color: 0x00f0ff,
-    wireframe: true,
-    transparent: true,
-    opacity: 0.35
-  });
-  const gridMesh = new THREE.Mesh(gridGeo, gridMat);
-  earthSystem.add(gridMesh);
-
-  // 1.3 Atmosfera Bercahaya (Cyan Atmospheric Glow)
-  const atmoGeo = new THREE.SphereGeometry(3.9, 32, 32);
-  const atmoMat = new THREE.MeshBasicMaterial({
-    color: 0x00f0ff,
-    transparent: true,
-    opacity: 0.12,
-    side: THREE.BackSide
-  });
-  const atmoMesh = new THREE.Mesh(atmoGeo, atmoMat);
-  earthSystem.add(atmoMesh);
-
-  // 1.4 Cincin Garisan Orbit Kuantum (Orbital Trajectory Ring)
-  const orbitRingGeo = new THREE.TorusGeometry(6.2, 0.03, 16, 120);
-  const orbitRingMat = new THREE.MeshBasicMaterial({
-    color: 0x00f0ff,
-    transparent: true,
-    opacity: 0.35
-  });
-  const orbitRing = new THREE.Mesh(orbitRingGeo, orbitRingMat);
-  orbitRing.rotation.x = Math.PI / 2.6;
-  orbitRing.rotation.y = -Math.PI / 7;
-  earthSystem.add(orbitRing);
-
-  // 1.5 ROKET 3D (CYBER ROCKET CRUISER)
-  const rocket = new THREE.Group();
-
-  // Badan Roket (Fuselage)
-  const bodyGeo = new THREE.ConeGeometry(0.55, 2.2, 12);
-  const bodyMat = new THREE.MeshStandardMaterial({
-    color: 0xf8fafc,
+  // Kepala Mecha Bersudut (Cyber Head)
+  const headGeo = new THREE.BoxGeometry(1.6, 1.9, 1.5);
+  const mechaMat = new THREE.MeshStandardMaterial({
+    color: 0x091428,
     roughness: 0.2,
-    metalness: 0.85
+    metalness: 0.9
   });
-  const rocketBody = new THREE.Mesh(bodyGeo, bodyMat);
-  rocketBody.rotation.z = -Math.PI / 2;
-  rocket.add(rocketBody);
+  const head = new THREE.Mesh(headGeo, mechaMat);
+  head.position.y = 3.6;
+  robotGroup.add(head);
 
-  // Kokpit Kaca Cyan (Visor)
-  const cockpitGeo = new THREE.SphereGeometry(0.28, 12, 12);
-  const cockpitMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff });
-  const cockpit = new THREE.Mesh(cockpitGeo, cockpitMat);
-  cockpit.position.set(0.35, 0.2, 0);
-  rocket.add(cockpit);
+  // Visor Holografik Bercahaya (Cyber Visor)
+  const visorGeo = new THREE.BoxGeometry(1.4, 0.45, 0.4);
+  const visorMat = new THREE.MeshBasicMaterial({ color: 0x00f0ff });
+  const visor = new THREE.Mesh(visorGeo, visorMat);
+  visor.position.set(0, 3.7, 0.72);
+  robotGroup.add(visor);
 
-  // Sirip / Sayap Roket (Fins)
-  const finGeo = new THREE.BoxGeometry(0.7, 0.08, 1.4);
-  const finMat = new THREE.MeshBasicMaterial({ color: 0xff0070 });
-  const fins = new THREE.Mesh(finGeo, finMat);
-  fins.position.set(-0.6, 0, 0);
-  rocket.add(fins);
+  // Leher Mekanikal
+  const neckGeo = new THREE.CylinderGeometry(0.45, 0.55, 0.7, 16);
+  const neck = new THREE.Mesh(neckGeo, mechaMat);
+  neck.position.y = 2.4;
+  robotGroup.add(neck);
 
-  // Api Plasma Ekzos Roket (Plasma Flame)
-  const flameGeo = new THREE.ConeGeometry(0.28, 1.2, 12);
-  const flameMat = new THREE.MeshBasicMaterial({ color: 0xff7700 });
-  const flame = new THREE.Mesh(flameGeo, flameMat);
-  flame.rotation.z = Math.PI / 2;
-  flame.position.set(-1.4, 0, 0);
-  rocket.add(flame);
+  // Torso / Dada Humanoid
+  const torsoGeo = new THREE.BoxGeometry(3.2, 3.0, 1.8);
+  const torso = new THREE.Mesh(torsoGeo, mechaMat);
+  torso.position.y = 0.6;
+  robotGroup.add(torso);
 
-  rocket.scale.set(0.75, 0.75, 0.75);
-  scene.add(rocket);
+  // Reaktor Dada AI (Arc Reactor)
+  const arcGeo = new THREE.CylinderGeometry(0.55, 0.55, 0.3, 24);
+  const arcMat = new THREE.MeshBasicMaterial({ color: 0xff0070 });
+  const arcReactor = new THREE.Mesh(arcGeo, arcMat);
+  arcReactor.rotation.x = Math.PI / 2;
+  arcReactor.position.set(0, 0.9, 0.92);
+  robotGroup.add(arcReactor);
 
-  // 1.6 ZARAH KOSMIK ANGKASA (STARFIELD)
-  const starCount = 650;
-  const starGeo = new THREE.BufferGeometry();
-  const starPositions = new Float32Array(starCount * 3);
+  // Bahu & Lengan Mengendalikan Skrin
+  const armMat = new THREE.MeshStandardMaterial({ color: 0x12243d, metalness: 0.8 });
+  
+  // Lengan Kiri
+  const leftArm = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.25, 2.2, 12), armMat);
+  leftArm.position.set(-1.9, 0.4, 1.0);
+  leftArm.rotation.set(Math.PI / 4, 0, -Math.PI / 6);
+  robotGroup.add(leftArm);
 
-  for (let i = 0; i < starCount * 3; i += 3) {
-    starPositions[i] = (Math.random() - 0.5) * 60;
-    starPositions[i + 1] = (Math.random() - 0.5) * 60;
-    starPositions[i + 2] = (Math.random() - 0.5) * 60;
+  // Lengan Kanan
+  const rightArm = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.25, 2.2, 12), armMat);
+  rightArm.position.set(1.9, 0.4, 1.0);
+  rightArm.rotation.set(Math.PI / 4, 0, Math.PI / 6);
+  robotGroup.add(rightArm);
+
+  workstation.add(robotGroup);
+
+  /* 1.2 TIGA (3) SKRIN HOLOGRAFIK PC (TRIPLE CURVED MONITORS) */
+  function createHoloScreen(width, height, colorHex, borderHex) {
+    const screenGroup = new THREE.Group();
+
+    // Paparan Kaca Lut Sinar
+    const panelGeo = new THREE.PlaneGeometry(width, height);
+    const panelMat = new THREE.MeshBasicMaterial({
+      color: colorHex,
+      transparent: true,
+      opacity: 0.22,
+      side: THREE.DoubleSide
+    });
+    const panel = new THREE.Mesh(panelGeo, panelMat);
+    screenGroup.add(panel);
+
+    // Bingkai Bercahaya Luar
+    const edges = new THREE.EdgesGeometry(panelGeo);
+    const border = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: borderHex, linewidth: 2 }));
+    screenGroup.add(border);
+
+    // Garisan Imbasan Data Dalaman
+    const scanLines = new THREE.GridHelper(width, 6, borderHex, borderHex);
+    scanLines.rotation.x = Math.PI / 2;
+    scanLines.material.opacity = 0.3;
+    scanLines.material.transparent = true;
+    screenGroup.add(scanLines);
+
+    return screenGroup;
   }
-  starGeo.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
 
-  const starMat = new THREE.PointsMaterial({
+  // 1. Skrin Tengah (Main Matrix Terminal)
+  const centerScreen = createHoloScreen(4.8, 3.0, 0x00f0ff, 0x00f0ff);
+  centerScreen.position.set(0, 1.2, 1.2);
+  workstation.add(centerScreen);
+
+  // 2. Skrin Kiri (Left Telemetry Screen - Condong ke dalam)
+  const leftScreen = createHoloScreen(3.8, 2.6, 0xff0070, 0xff0070);
+  leftScreen.position.set(-4.2, 1.1, 0.3);
+  leftScreen.rotation.y = Math.PI / 5.5; // Menghadap ke arah robot & pengguna
+  workstation.add(leftScreen);
+
+  // 3. Skrin Kanan (Right AI Analytics Screen - Condong ke dalam)
+  const rightScreen = createHoloScreen(3.8, 2.6, 0x00f0ff, 0x00f0ff);
+  rightScreen.position.set(4.2, 1.1, 0.3);
+  rightScreen.rotation.y = -Math.PI / 5.5; // Menghadap ke arah robot & pengguna
+  workstation.add(rightScreen);
+
+  // Papan Kekunci Holografik di Meja (Holo Keyboard Desk)
+  const kbGeo = new THREE.PlaneGeometry(4.0, 1.6);
+  const kbMat = new THREE.MeshBasicMaterial({
     color: 0x00f0ff,
-    size: 0.22,
     transparent: true,
-    opacity: 0.8
+    opacity: 0.18,
+    side: THREE.DoubleSide
   });
-  const starField = new THREE.Points(starGeo, starMat);
-  scene.add(starField);
+  const keyboard = new THREE.Mesh(kbGeo, kbMat);
+  keyboard.rotation.x = -Math.PI / 2.3;
+  keyboard.position.set(0, -0.7, 1.6);
+  workstation.add(keyboard);
 
-  // Kawalan Sentuhan / Tetikus
+  /* 1.3 LANTAI GRID SIBER & ZARAH KOD DATA */
+  const gridFloor = new THREE.GridHelper(60, 40, 0x00f0ff, 0x0b1e38);
+  gridFloor.position.y = -3.8;
+  scene.add(gridFloor);
+
+  // Zarah Kod Kuantum Berterbangan
+  const particleCount = 450;
+  const particleGeo = new THREE.BufferGeometry();
+  const particlePos = new Float32Array(particleCount * 3);
+
+  for (let i = 0; i < particleCount * 3; i += 3) {
+    particlePos[i] = (Math.random() - 0.5) * 45;
+    particlePos[i + 1] = Math.random() * 25 - 5;
+    particlePos[i + 2] = (Math.random() - 0.5) * 45;
+  }
+  particleGeo.setAttribute('position', new THREE.BufferAttribute(particlePos, 3));
+
+  const particleMat = new THREE.PointsMaterial({
+    color: 0x00f0ff,
+    size: 0.18,
+    transparent: true,
+    opacity: 0.75
+  });
+  const dataCloud = new THREE.Points(particleGeo, particleMat);
+  scene.add(dataCloud);
+
+  // Interaksi Paralaks Melalui Sentuhan/Kursor
   let mouseX = 0, mouseY = 0;
   window.addEventListener('mousemove', (e) => {
     mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
@@ -503,49 +544,37 @@
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
 
-  // GELUNG ANIMASI 3D (ORBIT REVOLUTION)
+  // GELUNG ANIMASI 3D
   let clock = new THREE.Clock();
-  const orbitRadius = 6.2;
-  const orbitInclination = Math.PI / 6.5;
-
   function animate3D() {
     requestAnimationFrame(animate3D);
-    const t = clock.getElapsedTime() * 1.3; // Kelajuan roket mengelilingi planet
+    const t = clock.getElapsedTime();
 
-    // Putaran Bumi pada paksinya
-    earthMesh.rotation.y += 0.003;
-    gridMesh.rotation.y += 0.005;
-    gridMesh.rotation.x = Math.sin(t * 0.1) * 0.05;
+    // Robot Bernafas & Menggerakkan Kepala
+    head.rotation.y = Math.sin(t * 1.2) * 0.18;
+    head.rotation.x = Math.cos(t * 1.5) * 0.08;
+    torso.position.y = 0.6 + Math.sin(t * 2) * 0.06;
+    
+    // Denyutan Teras Reaktor
+    arcReactor.scale.set(1 + Math.sin(t * 10) * 0.08, 1, 1 + Math.sin(t * 10) * 0.08);
 
-    // Kira Kedudukan Roket Berkeliling Bumi Mengikut Orbit 3D
-    const currentAngle = t;
-    const rx = Math.cos(currentAngle) * orbitRadius;
-    const rz = Math.sin(currentAngle) * orbitRadius;
-    const ry = Math.sin(currentAngle) * (orbitRadius * Math.sin(orbitInclination));
+    // Skrin PC Terapung Perlahan
+    centerScreen.position.y = 1.2 + Math.sin(t * 1.8) * 0.08;
+    leftScreen.position.y = 1.1 + Math.cos(t * 1.6) * 0.08;
+    rightScreen.position.y = 1.1 + Math.sin(t * 1.6) * 0.08;
 
-    rocket.position.set(
-      earthSystem.position.x + rx,
-      earthSystem.position.y + ry,
-      earthSystem.position.z + rz
-    );
-
-    // Orientasi Muncung Roket Sentiasa Mengikut Arah Halaju Orbit
-    const nextAngle = currentAngle + 0.05;
-    const targetX = earthSystem.position.x + Math.cos(nextAngle) * orbitRadius;
-    const targetY = earthSystem.position.y + Math.sin(nextAngle) * (orbitRadius * Math.sin(orbitInclination));
-    const targetZ = earthSystem.position.z + Math.sin(nextAngle) * orbitRadius;
-    rocket.lookAt(targetX, targetY, targetZ);
-
-    // Denyutan Api Ekzos Plasma
-    flame.scale.set(1, 1 + Math.sin(t * 18) * 0.4, 1);
-
-    // Pergerakan Lembut Bintang di Latar Belakang
-    starField.rotation.y += 0.0004;
+    // Aliran Zarah Data Angkasa
+    const pos = dataCloud.geometry.attributes.position.array;
+    for (let i = 1; i < particleCount * 3; i += 3) {
+      pos[i] += 0.05;
+      if (pos[i] > 18) pos[i] = -5;
+    }
+    dataCloud.geometry.attributes.position.needsUpdate = true;
 
     // Kawalan Kamera Paralaks
-    camera.position.x += (mouseX * 3 - camera.position.x) * 0.05;
-    camera.position.y += (2 - mouseY * 2 - camera.position.y) * 0.05;
-    camera.lookAt(0, 4.5, 0);
+    camera.position.x += (mouseX * 3.5 - camera.position.x) * 0.05;
+    camera.position.y += (4.5 - mouseY * 2.0 - camera.position.y) * 0.05;
+    camera.lookAt(0, 3.8, 0);
 
     renderer.render(scene, camera);
   }
@@ -599,17 +628,17 @@
       progressBar.style.width = percent + '%';
 
       if (percent === 38) {
-        holoStatus.innerText = 'ORBITAL LOCK ACHIEVED';
-        holoSub.innerText = 'DOWNLOADING AI CURRICULUM PACKETS...';
+        holoStatus.innerText = 'TRIPLE SCREEN DISPLAY SYNCHRONIZED';
+        holoSub.innerText = 'CALIBRATING AI NEURAL WEIGHTS...';
       }
       if (percent === 74) {
-        holoStatus.innerText = 'TELEMETRY 100% SYNCHRONIZED';
-        holoSub.innerText = 'READY FOR CADET REGISTRATION...';
+        holoStatus.innerText = 'HUMANOID OPERATOR ONLINE';
+        holoSub.innerText = 'READY FOR APPLICANT REGISTRATION...';
       }
 
       if (percent >= 100) {
         clearInterval(interval);
-        holoStatus.innerText = 'ORBIT ESTABLISHED // ACCESS GRANTED';
+        holoStatus.innerText = 'WORKSTATION UNLOCKED // ACCESS GRANTED';
         holoSub.innerText = 'OPENING REGISTRATION FORM...';
 
         setTimeout(() => {
