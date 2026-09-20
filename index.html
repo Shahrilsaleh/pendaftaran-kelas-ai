@@ -14,9 +14,8 @@
       --void-black: #000002;
       --accretion-orange: #ff7b00;
       --accretion-gold: #ffbe3b;
-      --hologram-cyan: #00f0ff;
-      --panel-bg: rgba(6, 9, 18, 0.78);
-      --border-line: rgba(255, 160, 50, 0.35);
+      --panel-bg: rgba(5, 8, 16, 0.85);
+      --border-line: rgba(255, 190, 59, 0.4);
     }
 
     * {
@@ -40,7 +39,6 @@
       position: relative;
     }
 
-    /* 3D Black Hole Canvas */
     #universe-canvas {
       position: fixed;
       top: 0;
@@ -51,16 +49,28 @@
       pointer-events: auto;
     }
 
-    /* Kad Kaca Borang Elegan */
+    #singularity-flash {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: #ffffff;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 10;
+      transition: opacity 0.4s ease-out;
+    }
+
     .viewport-box {
       width: 100%;
       max-width: 480px;
       background: var(--panel-bg);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      backdrop-filter: blur(22px);
+      -webkit-backdrop-filter: blur(22px);
       border-radius: 20px;
       border: 1px solid var(--border-line);
-      box-shadow: 0 0 40px rgba(0, 0, 0, 0.9), 0 0 60px rgba(255, 123, 0, 0.15);
+      box-shadow: 0 0 50px rgba(0, 0, 0, 0.95), 0 0 40px rgba(255, 123, 0, 0.2);
       position: relative;
       z-index: 2;
       overflow: hidden;
@@ -146,55 +156,69 @@
 
     .gateway-btn:hover {
       background: rgba(255, 190, 59, 0.15);
-      box-shadow: 0 0 30px rgba(255, 123, 0, 0.5);
+      box-shadow: 0 0 30px rgba(255, 123, 0, 0.6);
     }
 
-    /* ================= 1. TRANSITION STATUS ================= */
+    /* ================= 1. TRANSITION STATUS & LOADING 0-100% ================= */
     #warp-hud {
       display: none;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 150px;
+      min-height: 160px;
       text-align: center;
+    }
+
+    .percent-display {
+      font-family: 'Consolas', monospace;
+      font-size: 26px;
+      font-weight: 800;
+      color: var(--accretion-gold);
+      text-shadow: 0 0 15px rgba(255, 190, 59, 0.6);
+      letter-spacing: 2px;
+      margin-bottom: 4px;
     }
 
     .holo-text {
       font-family: 'Consolas', monospace;
-      font-size: 13px;
-      color: #fff;
+      font-size: 11px;
+      color: #cbd5e1;
       font-weight: 600;
       letter-spacing: 1.5px;
+      text-transform: uppercase;
     }
 
     .holo-sub {
-      font-size: 11px;
-      color: var(--accretion-gold);
+      font-size: 10px;
+      color: var(--accretion-orange);
       margin-top: 6px;
       font-family: monospace;
       letter-spacing: 1px;
     }
 
     .progress-bar-wrap {
-      width: 180px;
-      height: 2px;
-      background: rgba(255, 255, 255, 0.1);
-      margin: 16px auto 0 auto;
+      width: 220px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 2px;
+      margin: 14px auto 0 auto;
       overflow: hidden;
+      border: 1px solid rgba(255, 190, 59, 0.3);
     }
 
     .progress-bar-inner {
       width: 0%;
       height: 100%;
       background: linear-gradient(90deg, var(--accretion-orange), var(--accretion-gold));
+      box-shadow: 0 0 10px var(--accretion-gold);
     }
 
     /* ================= 2. BORANG PENDAFTARAN ================= */
     #form-screen {
       display: none;
       opacity: 0;
-      transform: translateY(12px);
-      transition: all 0.6s ease;
+      transform: scale(0.9) translateY(20px);
+      transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .brand-badge {
@@ -243,7 +267,7 @@
     input {
       width: 100%;
       padding: 10px 12px;
-      background: rgba(3, 5, 12, 0.85);
+      background: rgba(3, 5, 12, 0.88);
       border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 8px;
       color: #ffffff;
@@ -297,6 +321,7 @@
 <body>
 
 <canvas id="universe-canvas"></canvas>
+<div id="singularity-flash"></div>
 
 <div class="viewport-box" id="main-panel">
   <div class="hud-corner top-left"></div>
@@ -315,10 +340,11 @@
     <button class="gateway-btn" onclick="enterBlackHole()">Daftar Sekarang</button>
   </div>
 
-  <!-- STATUS MENEMBUSI LOHONG HITAM -->
+  <!-- STATUS & KIRAAN LOADING PERATUSAN 0% - 100% -->
   <div id="warp-hud">
-    <div class="holo-text" id="holo-status">ENTERING EVENT HORIZON...</div>
-    <div class="holo-sub" id="holo-sub">GRAVITATIONAL LENSING ACTIVE</div>
+    <div class="percent-display" id="percent-val">0%</div>
+    <div class="holo-text" id="holo-status">TRAVERSING EVENT HORIZON</div>
+    <div class="holo-sub" id="holo-sub">GRAVITATIONAL TIME DILATION: ACTIVE</div>
     <div class="progress-bar-wrap">
       <div class="progress-bar-inner" id="progress-bar"></div>
     </div>
@@ -359,7 +385,7 @@
 </div>
 
 <script>
-  /* ================= 1. THREE.JS REALISTIC BLACK HOLE ================= */
+  /* ================= 1. THREE.JS 3D BLACK HOLE ================= */
   const canvas = document.getElementById('universe-canvas');
   const scene = new THREE.Scene();
   
@@ -370,14 +396,17 @@
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-  // 1.1 SFERA PUSAT LOHONG HITAM (EVENT HORIZON - GELAP GELITA)
+  const blackHoleGroup = new THREE.Group();
+  scene.add(blackHoleGroup);
+
+  // Sfera Pusat
   const holeGeo = new THREE.SphereGeometry(3.2, 48, 48);
   const holeMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
   const blackHole = new THREE.Mesh(holeGeo, holeMat);
-  scene.add(blackHole);
+  blackHoleGroup.add(blackHole);
 
-  // 1.2 GELANG FOTON CAHAYA (PHOTON RING GLOW)
-  const photonGeo = new THREE.RingGeometry(3.22, 3.45, 64);
+  // Gelang Foton Cahaya
+  const photonGeo = new THREE.RingGeometry(3.22, 3.48, 64);
   const photonMat = new THREE.MeshBasicMaterial({
     color: 0xffe29a,
     side: THREE.DoubleSide,
@@ -385,35 +414,33 @@
     opacity: 0.95
   });
   const photonRing = new THREE.Mesh(photonGeo, photonMat);
-  scene.add(photonRing);
+  blackHoleGroup.add(photonRing);
 
-  // 1.3 CAKERA AKRESI PLASMA BERPUTAR (ACCRETION DISK)
-  const diskParticleCount = 2800;
+  // Cakera Akresi Plasma
+  const diskParticleCount = 3000;
   const diskGeo = new THREE.BufferGeometry();
   const diskPositions = new Float32Array(diskParticleCount * 3);
   const diskColors = new Float32Array(diskParticleCount * 3);
 
   const innerRadius = 3.6;
-  const outerRadius = 11.5;
+  const outerRadius = 12.0;
 
   for (let i = 0; i < diskParticleCount; i++) {
     const r = innerRadius + Math.pow(Math.random(), 1.6) * (outerRadius - innerRadius);
     const theta = Math.random() * Math.PI * 2;
 
     diskPositions[i * 3] = Math.cos(theta) * r;
-    // Ketebalan cakera mengecil ke arah luar
     diskPositions[i * 3 + 1] = (Math.random() - 0.5) * (0.35 * (1 - (r / outerRadius)));
     diskPositions[i * 3 + 2] = Math.sin(theta) * r;
 
-    // Warna: Emas panas di dalam, Jingga kosmik di luar
     const ratio = (r - innerRadius) / (outerRadius - innerRadius);
-    if (ratio < 0.3) {
+    if (ratio < 0.25) {
       diskColors[i * 3] = 1.0;
-      diskColors[i * 3 + 1] = 0.9;
-      diskColors[i * 3 + 2] = 0.7;
+      diskColors[i * 3 + 1] = 0.95;
+      diskColors[i * 3 + 2] = 0.8;
     } else {
       diskColors[i * 3] = 1.0;
-      diskColors[i * 3 + 1] = 0.45 * (1 - ratio * 0.4);
+      diskColors[i * 3 + 1] = 0.48 * (1 - ratio * 0.4);
       diskColors[i * 3 + 2] = 0.05;
     }
   }
@@ -422,18 +449,18 @@
   diskGeo.setAttribute('color', new THREE.BufferAttribute(diskColors, 3));
 
   const diskMat = new THREE.PointsMaterial({
-    size: 0.16,
+    size: 0.17,
     vertexColors: true,
     transparent: true,
     opacity: 0.85,
     blending: THREE.AdditiveBlending
   });
   const accretionDisk = new THREE.Points(diskGeo, diskMat);
-  accretionDisk.rotation.x = Math.PI / 3.2; // Kecondongan cakera graviti
-  scene.add(accretionDisk);
+  accretionDisk.rotation.x = Math.PI / 3.2;
+  blackHoleGroup.add(accretionDisk);
 
-  // 1.4 BINTANG ANGKASA LEPAS (DISTANT COSMIC STARS)
-  const starCount = 900;
+  // Zarah Kosmik Latar Belakang
+  const starCount = 950;
   const starGeo = new THREE.BufferGeometry();
   const starPositions = new Float32Array(starCount * 3);
 
@@ -453,14 +480,18 @@
   const starField = new THREE.Points(starGeo, starMat);
   scene.add(starField);
 
-  // Interaksi Pergerakan Lembut Tetikus / Sentuhan
+  // Kawalan Sentuhan
   let mouseX = 0, mouseY = 0;
+  let isTraversing = false;
+
   window.addEventListener('mousemove', (e) => {
-    mouseX = (e.clientX / window.innerWidth - 0.5) * 1.5;
-    mouseY = (e.clientY / window.innerHeight - 0.5) * 1.5;
+    if (!isTraversing) {
+      mouseX = (e.clientX / window.innerWidth - 0.5) * 1.5;
+      mouseY = (e.clientY / window.innerHeight - 0.5) * 1.5;
+    }
   });
   window.addEventListener('touchmove', (e) => {
-    if (e.touches.length > 0) {
+    if (e.touches.length > 0 && !isTraversing) {
       mouseX = (e.touches[0].clientX / window.innerWidth - 0.5) * 1.5;
       mouseY = (e.touches[0].clientY / window.innerHeight - 0.5) * 1.5;
     }
@@ -472,22 +503,16 @@
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
 
-  // Parameter Animasi
   let diskSpinSpeed = 0.008;
-  let isEntering = false;
 
-  // GELUNG RENDER 3D
   function animate() {
     requestAnimationFrame(animate);
 
-    // Putaran Cakera Akresi Plasma
     accretionDisk.rotation.y += diskSpinSpeed;
     photonRing.lookAt(camera.position);
-
-    // Bintang bergerak sangat perlahan (tenang)
     starField.rotation.y += 0.0002;
 
-    if (!isEntering) {
+    if (!isTraversing) {
       camera.position.x += (mouseX * 2.0 - camera.position.x) * 0.04;
       camera.position.y += (-mouseY * 2.0 - camera.position.y) * 0.04;
       camera.lookAt(0, 0, 0);
@@ -497,122 +522,142 @@
   }
   animate();
 
-  /* ================= 2. AUDIO KOSMIK TENANG (DEEP SPACE DRONE) ================= */
+  /* ================= 2. AUDIO KOSMIK DENGUNGAN GRAVITI ================= */
   let audioCtx = null;
-  function getAudio() {
+  function initAudio() {
     if (!audioCtx) {
       const AudioClass = window.AudioContext || window.webkitAudioContext;
       if (AudioClass) audioCtx = new AudioClass();
     }
-    if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+    if (audioCtx && audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
     return audioCtx;
   }
 
-  // Dengungan Sub-Bass Angkasa Yang Halus & Tenang (Tiada Buzz)
-  function playCosmicDrone() {
+  function playCosmicSwell() {
     try {
-      const ctx = getAudio();
+      const ctx = initAudio();
       if (!ctx) return;
       const now = ctx.currentTime;
 
-      // Nada Sub-bass sangat rendah (45Hz)
-      const droneOsc = ctx.createOscillator();
-      const droneGain = ctx.createGain();
+      // Osilator 1: Nada Utama Rendah (Sine)
+      const osc1 = ctx.createOscillator();
+      const gain1 = ctx.createGain();
+      osc1.type = 'sine';
+      osc1.frequency.setValueAtTime(65, now);
+      osc1.frequency.exponentialRampToValueAtTime(140, now + 2.2);
 
-      droneOsc.type = 'sine';
-      droneOsc.frequency.setValueAtTime(45, now);
-      droneOsc.frequency.exponentialRampToValueAtTime(70, now + 2.0);
+      gain1.gain.setValueAtTime(0.01, now);
+      gain1.gain.linearRampToValueAtTime(0.2, now + 1.2); // Volum jelas kedengaran
+      gain1.gain.exponentialRampToValueAtTime(0.001, now + 2.8);
 
-      droneGain.gain.setValueAtTime(0.001, now);
-      droneGain.gain.linearRampToValueAtTime(0.05, now + 0.8);
-      droneGain.gain.exponentialRampToValueAtTime(0.001, now + 2.5);
+      osc1.connect(gain1);
+      gain1.connect(ctx.destination);
+      osc1.start(now);
+      osc1.stop(now + 2.8);
 
-      droneOsc.connect(droneGain);
-      droneGain.connect(ctx.destination);
+      // Osilator 2: Gemuruh Graviti (Triangle Sub)
+      const osc2 = ctx.createOscillator();
+      const gain2 = ctx.createGain();
+      osc2.type = 'triangle';
+      osc2.frequency.setValueAtTime(40, now);
+      osc2.frequency.linearRampToValueAtTime(80, now + 2.2);
 
-      droneOsc.start(now);
-      droneOsc.stop(now + 2.5);
-    } catch(e) {}
+      gain2.gain.setValueAtTime(0.01, now);
+      gain2.gain.linearRampToValueAtTime(0.15, now + 1.4);
+      gain2.gain.exponentialRampToValueAtTime(0.001, now + 2.8);
+
+      osc2.connect(gain2);
+      gain2.connect(ctx.destination);
+      osc2.start(now);
+      osc2.stop(now + 2.8);
+    } catch(e) {
+      console.log('Audio error:', e);
+    }
   }
 
-  /* ================= 3. TRANSISI MASUK KE LOHONG HITAM ================= */
+  /* ================= 3. TRANSISI MASUK & KIRAAN LOADING 0-100% ================= */
   function enterBlackHole() {
-    getAudio();
-    playCosmicDrone();
+    initAudio();
+    playCosmicSwell();
 
-    isEntering = true;
+    isTraversing = true;
     const gateway = document.getElementById('start-gateway');
     const warpHud = document.getElementById('warp-hud');
+    const percentVal = document.getElementById('percent-val');
     const progressBar = document.getElementById('progress-bar');
     const holoStatus = document.getElementById('holo-status');
     const holoSub = document.getElementById('holo-sub');
+    const flash = document.getElementById('singularity-flash');
 
     gateway.style.display = 'none';
     warpHud.style.display = 'flex';
 
-    // Gerakan kamera perlahan ditarik masuk mendekati Singularity
+    // Pecutan Kamera Menembusi Pusat
     gsap.to(camera.position, {
-      z: 7.5,
+      z: 0.5,
       y: 0,
       x: 0,
       duration: 2.2,
-      ease: 'power2.inOut'
+      ease: 'power3.in'
     });
 
-    // Cakera akresi berpusing sedikit lebih laju mengikut tarikan graviti
     gsap.to({ speed: 0.008 }, {
-      speed: 0.045,
+      speed: 0.08,
       duration: 2.2,
       onUpdate: function() {
         diskSpinSpeed = this.targets()[0].speed;
       }
     });
 
-    let percent = 0;
+    let currentPercent = 0;
     const interval = setInterval(() => {
-      percent += 2;
-      progressBar.style.width = percent + '%';
+      currentPercent += 2;
+      
+      // Kemas kini angka peratusan dan bar progres secara masa nyata
+      percentVal.innerText = currentPercent + '%';
+      progressBar.style.width = currentPercent + '%';
 
-      if (percent === 45) {
+      if (currentPercent === 36) {
         holoStatus.innerText = 'APPROACHING SINGULARITY';
-        holoSub.innerText = 'TIME DILATION IN EFFECT...';
+        holoSub.innerText = 'SPACETIME COMPRESSION IN PROGRESS...';
       }
-      if (percent === 80) {
-        holoStatus.innerText = 'CROSSING THRESHOLD';
-        holoSub.innerText = 'STABILIZING QUANTUM LINK...';
+      if (currentPercent === 74) {
+        holoStatus.innerText = 'PENETRATING EVENT HORIZON';
+        holoSub.innerText = 'PHOTON RING SHIFT: CRITICAL';
       }
 
-      if (percent >= 100) {
+      if (currentPercent >= 100) {
         clearInterval(interval);
+        percentVal.innerText = '100%';
         holoStatus.innerText = 'TRAVERSAL COMPLETE';
         holoSub.innerText = 'WELCOME TO MIRACLE LIFE TECHNOLOGY';
 
-        // Kamera kembali ke kedudukan stabil
-        gsap.to(camera.position, {
-          z: 18,
-          duration: 1.2,
-          ease: 'power2.out'
-        });
-        gsap.to({ speed: 0.045 }, {
-          speed: 0.006,
-          duration: 1.2,
-          onUpdate: function() {
-            diskSpinSpeed = this.targets()[0].speed;
-          }
-        });
+        // Kilauan Cahaya Putih (White Hole Emergence)
+        flash.style.opacity = '1';
 
         setTimeout(() => {
+          blackHoleGroup.visible = false;
+          
+          camera.position.set(0, 0, 18);
+          camera.lookAt(0, 0, 0);
+
           warpHud.style.display = 'none';
           const formScreen = document.getElementById('form-screen');
           formScreen.style.display = 'block';
+
+          flash.style.opacity = '0';
+
           setTimeout(() => {
             formScreen.style.opacity = '1';
-            formScreen.style.transform = 'translateY(0)';
-            isEntering = false;
-          }, 50);
-        }, 500);
+            formScreen.style.transform = 'scale(1) translateY(0)';
+            isTraversing = false;
+          }, 100);
+
+        }, 400);
       }
-    }, 35);
+    }, 40); // 40ms * 50 ticks = ~2.0 saat masa pemuatan
   }
 
   /* ================= 4. PENGHANTARAN BORANG (NO-CORS) ================= */
