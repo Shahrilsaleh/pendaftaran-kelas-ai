@@ -11,13 +11,12 @@
 
   <style>
     :root {
-      --sky-top: #0a1128;
-      --sky-mid: #1c2b59;
-      --sky-horizon: #fdbb74;
-      --gold-primary: #f59e0b;
-      --gold-light: #fef08a;
-      --panel-glass: rgba(10, 16, 36, 0.72);
-      --border-line: rgba(254, 240, 138, 0.35);
+      --night-garden: #03080e;
+      --red-carpet: #990f26;
+      --gold-royal: #e5b842;
+      --gold-light: #fff0a6;
+      --panel-glass: rgba(7, 14, 25, 0.78);
+      --border-gold: rgba(229, 184, 66, 0.45);
     }
 
     * {
@@ -29,7 +28,7 @@
     }
 
     body {
-      background: linear-gradient(180deg, var(--sky-top) 0%, var(--sky-mid) 60%, var(--sky-horizon) 100%);
+      background-color: var(--night-garden);
       color: #f8fafc;
       min-height: 100vh;
       display: flex;
@@ -41,8 +40,7 @@
       position: relative;
     }
 
-    /* Kanvas 3D Awan */
-    #cloud-canvas {
+    #garden-canvas {
       position: fixed;
       top: 0;
       left: 0;
@@ -52,21 +50,19 @@
       pointer-events: auto;
     }
 
-    /* Kabus Awan Putih Lembut Semasa Menembusi */
-    #cloud-flash {
+    #garden-flash {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.95) 20%, rgba(254, 243, 199, 0.8) 70%, transparent 100%);
+      background: radial-gradient(circle, #fffbe6 15%, #e5b842 65%, transparent 100%);
       opacity: 0;
       pointer-events: none;
       z-index: 10;
       transition: opacity 0.5s ease-out;
     }
 
-    /* Kad Borang Kaca Mewah */
     .viewport-box {
       width: 100%;
       max-width: 480px;
@@ -74,8 +70,8 @@
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-radius: 22px;
-      border: 1px solid var(--border-line);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 30px rgba(254, 240, 138, 0.2);
+      border: 1px solid var(--border-gold);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.8), 0 0 30px rgba(229, 184, 66, 0.25);
       position: relative;
       z-index: 2;
       overflow: hidden;
@@ -87,7 +83,7 @@
       position: absolute;
       width: 14px;
       height: 14px;
-      border-color: var(--gold-light);
+      border-color: var(--gold-royal);
       pointer-events: none;
     }
     .top-left { top: 8px; left: 8px; border-top: 2px solid; border-left: 2px solid; }
@@ -106,27 +102,27 @@
       padding: 8px;
     }
 
-    .cloud-badge {
+    .garden-badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
       font-size: 10px;
       font-family: 'Consolas', monospace;
       color: var(--gold-light);
-      background: rgba(254, 240, 138, 0.12);
-      border: 1px solid rgba(254, 240, 138, 0.35);
+      background: rgba(229, 184, 66, 0.12);
+      border: 1px solid rgba(229, 184, 66, 0.4);
       padding: 4px 14px;
       border-radius: 20px;
       margin-bottom: 12px;
       letter-spacing: 1.5px;
     }
 
-    .gold-dot {
+    .carpet-dot {
       width: 6px;
       height: 6px;
-      background: var(--gold-light);
+      background: #e11d48;
       border-radius: 50%;
-      box-shadow: 0 0 8px var(--gold-light);
+      box-shadow: 0 0 8px #e11d48;
     }
 
     .gateway-title {
@@ -135,12 +131,12 @@
       color: #fff;
       letter-spacing: 1px;
       margin-bottom: 6px;
-      text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+      text-shadow: 0 2px 10px rgba(0,0,0,0.6);
     }
 
     .gateway-desc {
       font-size: 12px;
-      color: #e2e8f0;
+      color: #cbd5e1;
       margin-bottom: 24px;
       line-height: 1.5;
     }
@@ -148,7 +144,7 @@
     .gateway-btn {
       padding: 15px 38px;
       background: transparent;
-      border: 1.5px solid var(--gold-light);
+      border: 1.5px solid var(--gold-royal);
       border-radius: 30px;
       color: #fff;
       font-size: 13px;
@@ -156,48 +152,49 @@
       letter-spacing: 1.5px;
       text-transform: uppercase;
       cursor: pointer;
-      box-shadow: 0 0 22px rgba(254, 240, 138, 0.35), inset 0 0 12px rgba(254, 240, 138, 0.2);
+      box-shadow: 0 0 22px rgba(229, 184, 66, 0.35), inset 0 0 12px rgba(229, 184, 66, 0.2);
       transition: all 0.3s;
     }
 
     .gateway-btn:hover {
-      background: rgba(254, 240, 138, 0.2);
-      box-shadow: 0 0 35px rgba(254, 240, 138, 0.6);
+      background: rgba(229, 184, 66, 0.25);
+      box-shadow: 0 0 35px rgba(229, 184, 66, 0.65);
     }
 
-    /* ================= 1. LOADING & PERATUSAN (0% - 100%) ================= */
+    /* ================= 1. LOADING & TERIMA KASIH (0% - 100%) ================= */
     #warp-hud {
       display: none;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 160px;
+      min-height: 170px;
       text-align: center;
+      padding: 10px 5px;
+    }
+
+    .thank-you-title {
+      font-size: 19px;
+      font-weight: 800;
+      color: #ffffff;
+      text-shadow: 0 0 15px rgba(255, 240, 166, 0.7);
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      line-height: 1.4;
     }
 
     .percent-display {
       font-family: 'Consolas', monospace;
       font-size: 30px;
       font-weight: 800;
-      color: #ffffff;
-      text-shadow: 0 0 18px rgba(254, 240, 138, 0.9);
+      color: var(--gold-light);
+      text-shadow: 0 0 16px rgba(229, 184, 66, 0.85);
       letter-spacing: 2px;
-      margin-bottom: 4px;
-    }
-
-    .holo-text {
-      font-family: 'Consolas', monospace;
-      font-size: 11px;
-      color: #f8fafc;
-      font-weight: 600;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
+      margin-bottom: 6px;
     }
 
     .holo-sub {
-      font-size: 10px;
-      color: var(--gold-light);
-      margin-top: 6px;
+      font-size: 11px;
+      color: var(--gold-royal);
       font-family: monospace;
       letter-spacing: 1px;
     }
@@ -209,14 +206,14 @@
       border-radius: 2px;
       margin: 14px auto 0 auto;
       overflow: hidden;
-      border: 1px solid rgba(254, 240, 138, 0.35);
+      border: 1px solid rgba(229, 184, 66, 0.4);
     }
 
     .progress-bar-inner {
       width: 0%;
       height: 100%;
-      background: linear-gradient(90deg, #f59e0b, #fef08a, #ffffff);
-      box-shadow: 0 0 10px var(--gold-light);
+      background: linear-gradient(90deg, #990f26, #e5b842, #fff0a6);
+      box-shadow: 0 0 10px var(--gold-royal);
     }
 
     /* ================= 2. BORANG PENDAFTARAN ================= */
@@ -231,20 +228,20 @@
       display: inline-block;
       font-size: 10px;
       color: var(--gold-light);
-      border: 1px solid rgba(254, 240, 138, 0.45);
+      border: 1px solid rgba(229, 184, 66, 0.45);
       padding: 3px 12px;
       border-radius: 20px;
       letter-spacing: 1.5px;
       text-transform: uppercase;
       margin-bottom: 6px;
-      background: rgba(254, 240, 138, 0.12);
+      background: rgba(229, 184, 66, 0.12);
     }
 
     h1 {
       font-size: 20px;
       font-weight: 800;
       line-height: 1.3;
-      background: linear-gradient(135deg, #ffffff 60%, var(--gold-light) 100%);
+      background: linear-gradient(135deg, #ffffff 50%, var(--gold-light) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       margin-bottom: 4px;
@@ -273,8 +270,8 @@
     input {
       width: 100%;
       padding: 10px 12px;
-      background: rgba(4, 9, 24, 0.85);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: rgba(3, 8, 18, 0.88);
+      border: 1px solid rgba(255, 255, 255, 0.18);
       border-radius: 8px;
       color: #ffffff;
       font-size: 13px;
@@ -284,29 +281,29 @@
 
     input:focus {
       border-color: var(--gold-light);
-      box-shadow: 0 0 12px rgba(254, 240, 138, 0.35);
+      box-shadow: 0 0 12px rgba(229, 184, 66, 0.35);
     }
 
     button.btn-submit {
       width: 100%;
       padding: 13px;
       margin-top: 8px;
-      background: linear-gradient(135deg, #f59e0b 0%, #fbbf24 50%, #fef08a 100%);
+      background: linear-gradient(135deg, #990f26 0%, #e5b842 100%);
       border: none;
       border-radius: 8px;
-      color: #0f172a;
+      color: #ffffff;
       font-size: 13px;
       font-weight: 800;
       letter-spacing: 1px;
       text-transform: uppercase;
       cursor: pointer;
-      box-shadow: 0 4px 20px rgba(245, 158, 11, 0.4);
+      box-shadow: 0 4px 20px rgba(153, 15, 38, 0.4);
       transition: transform 0.2s, box-shadow 0.2s;
     }
 
     button.btn-submit:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 25px rgba(245, 158, 11, 0.6);
+      box-shadow: 0 6px 25px rgba(229, 184, 66, 0.6);
     }
 
     button:disabled {
@@ -326,8 +323,8 @@
 </head>
 <body>
 
-<canvas id="cloud-canvas"></canvas>
-<div id="cloud-flash"></div>
+<canvas id="garden-canvas"></canvas>
+<div id="garden-flash"></div>
 
 <div class="viewport-box" id="main-panel">
   <div class="hud-corner top-left"></div>
@@ -337,20 +334,20 @@
 
   <!-- GATEWAY INTERAKTIF -->
   <div id="start-gateway">
-    <div class="cloud-badge">
-      <div class="gold-dot"></div>
-      <span>CELESTIAL REALM // HEAVENLY CLOUDS</span>
+    <div class="garden-badge">
+      <div class="carpet-dot"></div>
+      <span>ROYAL GARDEN // RED CARPET</span>
     </div>
     <div class="gateway-title">PENDAFTARAN KELAS AI</div>
-    <div class="gateway-desc">Selusuri lautan awan kayangan untuk memulakan langkah menuntut ilmu bersama Miracle Life Technology.</div>
-    <button class="gateway-btn" onclick="startCloudFlight()">Daftar Sekarang</button>
+    <div class="gateway-desc">Laluan eksklusif anda menuju penguasaan teknologi masa hadapan bersama Miracle Life Technology.</div>
+    <button class="gateway-btn" onclick="startGardenWalk()">Daftar Sekarang</button>
   </div>
 
-  <!-- STATUS MENYELUSURI AWAN (0% - 100%) -->
+  <!-- STATUS MENYELUSURI PERMAIDANI & TERIMA KASIH (0% - 100%) -->
   <div id="warp-hud">
+    <div class="thank-you-title">Terima Kasih kerana memilih kelas ini</div>
     <div class="percent-display" id="percent-val">0%</div>
-    <div class="holo-text" id="holo-status">TRAVERSING DREAMY CLOUDSCAPE...</div>
-    <div class="holo-sub" id="holo-sub">ASCENDING TO CELESTIAL HORIZON</div>
+    <div class="holo-sub" id="holo-sub">MEMASUKI RUANG PEMBELAJARAN DIRAJAL...</div>
     <div class="progress-bar-wrap">
       <div class="progress-bar-inner" id="progress-bar"></div>
     </div>
@@ -391,119 +388,145 @@
 </div>
 
 <script>
-  /* ================= 1. THREE.JS 3D VOLUMETRIC CLOUD SEEDING ================= */
-  const canvas = document.getElementById('cloud-canvas');
+  /* ================= 1. THREE.JS 3D RED CARPET GARDEN ================= */
+  const canvas = document.getElementById('garden-canvas');
   const scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x1c2b59, 0.015);
+  scene.fog = new THREE.FogExp2(0x03080e, 0.018);
 
-  const camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 1000);
-  camera.position.set(0, 0, 35); // Bermula di luar awan
+  const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+  camera.position.set(0, 3.2, 28); // Kedudukan awal di permulaan permaidani merah
 
-  const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+  const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: false });
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-  // Pencahayaan Awan (Ambient Lembut + Sinaran Emas Matahari)
-  const ambient = new THREE.AmbientLight(0x718096, 2.0);
+  // Pencahayaan Ambien Taman Malam
+  const ambient = new THREE.AmbientLight(0x1a2e3b, 1.8);
   scene.add(ambient);
 
-  const sunLight = new THREE.DirectionalLight(0xffedd5, 3.2);
-  sunLight.position.set(10, 20, 10);
-  scene.add(sunLight);
+  const moonLight = new THREE.DirectionalLight(0xdbeafe, 2.0);
+  moonLight.position.set(5, 25, 10);
+  scene.add(moonLight);
 
-  const sunsetGlow = new THREE.PointLight(0xf59e0b, 2.8, 80);
-  sunsetGlow.position.set(0, -10, -30);
-  scene.add(sunsetGlow);
+  const gardenGroup = new THREE.Group();
+  scene.add(gardenGroup);
 
-  const cloudsGroup = new THREE.Group();
-  scene.add(cloudsGroup);
+  // Bahan PBR
+  const grassMat = new THREE.MeshStandardMaterial({ color: 0x071b12, roughness: 0.9, metalness: 0.05 });
+  const carpetMat = new THREE.MeshStandardMaterial({ color: 0x880e22, roughness: 0.6, metalness: 0.15 });
+  const goldStripeMat = new THREE.MeshStandardMaterial({ color: 0xe5b842, roughness: 0.25, metalness: 0.85 });
+  const plantMat = new THREE.MeshStandardMaterial({ color: 0x113b22, roughness: 0.8 });
+  const flowerMat = new THREE.MeshStandardMaterial({ color: 0xe11d48, roughness: 0.5 });
+  const archMetalMat = new THREE.MeshStandardMaterial({ color: 0xd4af37, roughness: 0.3, metalness: 0.9 });
+  const lanternGlowMat = new THREE.MeshBasicMaterial({ color: 0xffe885 });
 
-  // 1.1 MEMBINA GUMPALAN AWAN LEMBUT 3D (SOFT PUFF CLOUDS)
-  const cloudMatBase = new THREE.MeshStandardMaterial({
-    color: 0xf8fafc,
-    roughness: 0.9,
-    metalness: 0.05,
-    transparent: true,
-    opacity: 0.55
+  // 1.1 PADANG RUMPUT TAMAN & PERMAIDANI MERAH PANJANG
+  const grass = new THREE.Mesh(new THREE.PlaneGeometry(60, 110), grassMat);
+  grass.rotation.x = -Math.PI / 2;
+  grass.position.set(0, -0.6, -15);
+  gardenGroup.add(grass);
+
+  // Permaidani Merah (Lebar 5.2, Panjang 100 ke hadapan)
+  const carpet = new THREE.Mesh(new THREE.PlaneGeometry(5.2, 100), carpetMat);
+  carpet.rotation.x = -Math.PI / 2;
+  carpet.position.set(0, -0.58, -15);
+  gardenGroup.add(carpet);
+
+  // Jalur Sempadan Emas Permaidani Kiri & Kanan
+  [-2.6, 2.6].forEach(x => {
+    const stripe = new THREE.Mesh(new THREE.PlaneGeometry(0.2, 100), goldStripeMat);
+    stripe.rotation.x = -Math.PI / 2;
+    stripe.position.set(x, -0.56, -15);
+    gardenGroup.add(stripe);
   });
 
-  const cloudMatGold = new THREE.MeshStandardMaterial({
-    color: 0xfef08a,
-    roughness: 0.8,
-    metalness: 0.1,
-    transparent: true,
-    opacity: 0.45
-  });
+  // 1.2 DERETAN POKOK RENANG & BUNGA DI KIRI KANAN LALUAN
+  for (let z = 24; z >= -55; z -= 7) {
+    [-4.6, 4.6].forEach(x => {
+      const bushGroup = new THREE.Group();
+      bushGroup.position.set(x, -0.5, z);
 
-  // Susunan Gumpalan Awan di sepanjang koridor Z (dari z: 30 hingga z: -60)
-  const cloudClusters = [];
-  const clusterCount = 38;
+      // Pokok Rimbun Bulat (Bushes)
+      const bush1 = new THREE.Mesh(new THREE.SphereGeometry(1.2 + Math.random() * 0.3, 12, 12), plantMat);
+      bush1.position.set(0, 0.8, 0);
+      bushGroup.add(bush1);
 
-  for (let i = 0; i < clusterCount; i++) {
-    const cluster = new THREE.Group();
-    
-    // Setiap kelompok awan mempunyai 4 hingga 7 sfera bertindih membentuk bentuk awan semula jadi
-    const puffCount = 5 + Math.floor(Math.random() * 3);
-    const isSunsetEdge = Math.random() > 0.6;
-    const currentMat = isSunsetEdge ? cloudMatGold : cloudMatBase;
+      const bush2 = new THREE.Mesh(new THREE.SphereGeometry(0.9, 10, 10), plantMat);
+      bush2.position.set((x > 0 ? 0.6 : -0.6), 0.6, 0.4);
+      bushGroup.add(bush2);
 
-    for (let j = 0; j < puffCount; j++) {
-      const puffGeo = new THREE.SphereGeometry(1.8 + Math.random() * 2.2, 16, 16);
-      const puff = new THREE.Mesh(puffGeo, currentMat);
-      puff.position.set(
-        (Math.random() - 0.5) * 4.5,
-        (Math.random() - 0.5) * 2.5,
-        (Math.random() - 0.5) * 4.5
-      );
-      cluster.add(puff);
-    }
+      // Bunga Mawar Kecil di Pokok
+      for (let f = 0; f < 4; f++) {
+        const flower = new THREE.Mesh(new THREE.SphereGeometry(0.2, 8, 8), flowerMat);
+        flower.position.set(
+          (Math.random() - 0.5) * 1.6,
+          0.6 + Math.random() * 0.9,
+          (Math.random() - 0.5) * 1.6
+        );
+        bushGroup.add(flower);
+      }
 
-    // Sebarkan awan di kiri, kanan, atas, bawah sepanjang laluan lorong penerbangan
-    const side = (i % 2 === 0) ? 1 : -1;
-    cluster.position.set(
-      side * (6 + Math.random() * 12),
-      (Math.random() - 0.5) * 14,
-      30 - i * 3.0
-    );
-
-    cloudsGroup.add(cluster);
-    cloudClusters.push(cluster);
+      gardenGroup.add(bushGroup);
+    });
   }
 
-  // 1.2 ZARAH KILAUAN CAHAYA KAYANGAN (FLOATING SUNLIGHT DUST)
-  const dustCount = 450;
-  const dustGeo = new THREE.BufferGeometry();
-  const dustPos = new Float32Array(dustCount * 3);
+  // 1.3 GERBANG BUNGA & TIANG LAMPU KLASIK SEPANJANG LALUAN
+  for (let z = 18; z >= -48; z -= 16) {
+    // Gerbang Lengkungan Emas Merentasi Permaidani
+    const arch = new THREE.Mesh(new THREE.TorusGeometry(3.6, 0.12, 12, 36, Math.PI), archMetalMat);
+    arch.position.set(0, 2.8, z);
+    gardenGroup.add(arch);
 
-  for (let i = 0; i < dustCount * 3; i += 3) {
-    dustPos[i] = (Math.random() - 0.5) * 60;
-    dustPos[i + 1] = (Math.random() - 0.5) * 30;
-    dustPos[i + 2] = (Math.random() - 0.5) * 90;
+    // Tiang Lampu Taman Bercahaya Hangat
+    [-3.8, 3.8].forEach(x => {
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.08, 4.2, 12), archMetalMat);
+      pole.position.set(x, 1.5, z);
+      gardenGroup.add(pole);
+
+      const lantern = new THREE.Mesh(new THREE.SphereGeometry(0.28, 12, 12), lanternGlowMat);
+      lantern.position.set(x, 3.6, z);
+      gardenGroup.add(lantern);
+
+      const light = new THREE.PointLight(0xffdf78, 1.4, 12);
+      light.position.set(x, 3.6, z);
+      gardenGroup.add(light);
+    });
   }
-  dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPos, 3));
 
-  const dustMat = new THREE.PointsMaterial({
-    color: 0xfef08a,
-    size: 0.25,
+  // 1.4 KUNANG-KUNANG BERSINAR TERAPUNG (GOLDEN FIREFLIES)
+  const fireflyCount = 280;
+  const fireflyGeo = new THREE.BufferGeometry();
+  const fireflyPos = new Float32Array(fireflyCount * 3);
+
+  for (let i = 0; i < fireflyCount * 3; i += 3) {
+    fireflyPos[i] = (Math.random() - 0.5) * 22;
+    fireflyPos[i + 1] = Math.random() * 8 + 0.2;
+    fireflyPos[i + 2] = (Math.random() - 0.5) * 80 - 5;
+  }
+  fireflyGeo.setAttribute('position', new THREE.BufferAttribute(fireflyPos, 3));
+
+  const fireflyMat = new THREE.PointsMaterial({
+    color: 0xffef8a,
+    size: 0.28,
     transparent: true,
-    opacity: 0.75,
+    opacity: 0.85,
     blending: THREE.AdditiveBlending
   });
-  const sunlightDust = new THREE.Points(dustGeo, dustMat);
-  scene.add(sunlightDust);
+  const fireflies = new THREE.Points(fireflyGeo, fireflyMat);
+  gardenGroup.add(fireflies);
 
   // Kawalan Sentuhan Tetikus / Telefon
   let mouseX = 0, mouseY = 0;
-  let isFlying = false;
+  let isWalking = false;
 
   window.addEventListener('mousemove', (e) => {
-    if (!isFlying) {
+    if (!isWalking) {
       mouseX = (e.clientX / window.innerWidth - 0.5) * 1.5;
       mouseY = (e.clientY / window.innerHeight - 0.5) * 1.5;
     }
   });
   window.addEventListener('touchmove', (e) => {
-    if (e.touches.length > 0 && !isFlying) {
+    if (e.touches.length > 0 && !isWalking) {
       mouseX = (e.touches[0].clientX / window.innerWidth - 0.5) * 1.5;
       mouseY = (e.touches[0].clientY / window.innerHeight - 0.5) * 1.5;
     }
@@ -519,109 +542,77 @@
   function animate() {
     requestAnimationFrame(animate);
 
-    // Pergerakan Lembut Awan Bergerak Mengikut Angin
-    cloudClusters.forEach((c, idx) => {
-      c.position.x += Math.sin(Date.now() * 0.0005 + idx) * 0.005;
-      c.position.y += Math.cos(Date.now() * 0.0005 + idx) * 0.003;
-    });
+    // Kunang-Kunang Berlegar Naik Turun
+    const pos = fireflies.geometry.attributes.position.array;
+    for (let i = 1; i < fireflyCount * 3; i += 3) {
+      pos[i] += Math.sin(Date.now() * 0.002 + i) * 0.015;
+    }
+    fireflies.geometry.attributes.position.needsUpdate = true;
 
-    sunlightDust.rotation.y += 0.0002;
-
-    if (!isFlying) {
-      camera.position.x += (mouseX * 3.5 - camera.position.x) * 0.04;
-      camera.position.y += (-mouseY * 2.5 - camera.position.y) * 0.04;
-      camera.lookAt(0, 0, -20);
+    if (!isWalking) {
+      camera.position.x += (mouseX * 2.5 - camera.position.x) * 0.04;
+      camera.position.y += (3.2 - mouseY * 1.2 - camera.position.y) * 0.04;
+      camera.lookAt(0, 3.0, -10);
     }
 
     renderer.render(scene, camera);
   }
   animate();
 
-  /* ================= 2. AUDIO DERUAN ANGIN & HARPA KAYANGAN ================= */
+  /* ================= 2. AUDIO NADA SAMBUTAN LEMBUT ================= */
   let audioCtx = null;
-  function triggerCelestialAudio() {
+  function triggerWelcomeAudio() {
     try {
       const AudioClass = window.AudioContext || window.webkitAudioContext;
       if (!audioCtx) audioCtx = new AudioClass();
       if (audioCtx.state === 'suspended') audioCtx.resume();
 
       const now = audioCtx.currentTime;
-
-      // Lapisan 1: Alunan Harpa Emas (D5 -> F#5 -> A5 -> D6)
-      const harpNotes = [587.33, 739.99, 880.00, 1174.66];
-      harpNotes.forEach((freq, idx) => {
+      // Melodi Sambutan Diraja Lembut (F5 -> A5 -> C6 -> E6)
+      const notes = [698.46, 880.00, 1046.50, 1318.51];
+      notes.forEach((freq, idx) => {
         const osc = audioCtx.createOscillator();
         const gain = audioCtx.createGain();
 
         osc.type = 'sine';
-        osc.frequency.setValueAtTime(freq, now + idx * 0.24);
+        osc.frequency.setValueAtTime(freq, now + idx * 0.2);
 
-        gain.gain.setValueAtTime(0.001, now + idx * 0.24);
-        gain.gain.linearRampToValueAtTime(0.18, now + idx * 0.24 + 0.06);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.24 + 1.4);
+        gain.gain.setValueAtTime(0.001, now + idx * 0.2);
+        gain.gain.linearRampToValueAtTime(0.18, now + idx * 0.2 + 0.04);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + idx * 0.2 + 1.2);
 
         osc.connect(gain);
         gain.connect(audioCtx.destination);
 
-        osc.start(now + idx * 0.24);
-        osc.stop(now + idx * 0.24 + 1.4);
+        osc.start(now + idx * 0.2);
+        osc.stop(now + idx * 0.2 + 1.2);
       });
-
-      // Lapisan 2: Deruan Angin Lembut Kayangan (Soft Airy Breeze)
-      const bufferSize = audioCtx.sampleRate * 2.2;
-      const noiseBuffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
-      const output = noiseBuffer.getChannelData(0);
-      for (let i = 0; i < bufferSize; i++) {
-        output[i] = (Math.random() * 2 - 1) * 0.4;
-      }
-
-      const whiteNoise = audioCtx.createBufferSource();
-      whiteNoise.buffer = noiseBuffer;
-
-      const filter = audioCtx.createBiquadFilter();
-      filter.type = 'lowpass';
-      filter.frequency.setValueAtTime(450, now);
-      filter.frequency.linearRampToValueAtTime(800, now + 1.2);
-
-      const breezeGain = audioCtx.createGain();
-      breezeGain.gain.setValueAtTime(0.001, now);
-      breezeGain.gain.linearRampToValueAtTime(0.08, now + 0.8);
-      breezeGain.gain.exponentialRampToValueAtTime(0.001, now + 2.2);
-
-      whiteNoise.connect(filter);
-      filter.connect(breezeGain);
-      breezeGain.connect(audioCtx.destination);
-
-      whiteNoise.start(now);
-      whiteNoise.stop(now + 2.2);
-
     } catch(e) {
       console.log('Audio error:', e);
     }
   }
 
-  /* ================= 3. PENERBANGAN MENYELUSURI AWAN ================= */
-  function startCloudFlight() {
-    triggerCelestialAudio();
+  /* ================= 3. ANIMASI MENYELUSURI RED CARPET ================= */
+  function startGardenWalk() {
+    triggerWelcomeAudio();
 
-    isFlying = true;
+    isWalking = true;
     const gateway = document.getElementById('start-gateway');
     const warpHud = document.getElementById('warp-hud');
     const percentVal = document.getElementById('percent-val');
     const progressBar = document.getElementById('progress-bar');
-    const holoStatus = document.getElementById('holo-status');
     const holoSub = document.getElementById('holo-sub');
-    const flash = document.getElementById('cloud-flash');
+    const flash = document.getElementById('garden-flash');
 
     gateway.style.display = 'none';
     warpHud.style.display = 'flex';
 
-    // Kamera meluncur laju ke hadapan menembusi lapisan-lapisan awan (z: 35 -> z: -45)
+    // Kamera bergerak ke hadapan di atas laluan permaidani merah (z: 28 -> z: -15)
     gsap.to(camera.position, {
       x: 0,
-      y: 0,
-      z: -45,
-      duration: 2.5,
+      y: 2.5,
+      z: -15,
+      duration: 2.6,
       ease: 'power2.inOut'
     });
 
@@ -631,27 +622,23 @@
       percentVal.innerText = currentPercent + '%';
       progressBar.style.width = currentPercent + '%';
 
-      if (currentPercent === 36) {
-        holoStatus.innerText = 'GLIDING THROUGH GOLDEN MISTS';
-        holoSub.innerText = 'CALIBRATING CLOUD STREAM HARMONICS...';
+      if (currentPercent === 40) {
+        holoSub.innerText = 'MENELUSURI GERBANG MAWAR & CAHAYA...';
       }
       if (currentPercent === 76) {
-        holoStatus.innerText = 'APPROACHING SUNLIT CLEARING';
-        holoSub.innerText = 'REVEALING ADMISSION HORIZON...';
+        holoSub.innerText = 'MEMBUKA BORANG PENDAFTARAN RASMI...';
       }
 
       if (currentPercent >= 100) {
         clearInterval(interval);
         percentVal.innerText = '100%';
-        holoStatus.innerText = 'ARRIVAL COMPLETE';
 
-        // Kabus awan putih-emas meliputi pandangan seketika
         flash.style.opacity = '0.9';
 
         setTimeout(() => {
-          // Kamera berada di ruang awan tenang yang luas
-          camera.position.set(0, 0, -42);
-          camera.lookAt(0, 0, -80);
+          // Tetapkan sudut pandangan di hujung laluan taman
+          camera.position.set(0, 2.4, -14);
+          camera.lookAt(0, 2.6, -45);
 
           warpHud.style.display = 'none';
           const formScreen = document.getElementById('form-screen');
@@ -662,7 +649,7 @@
           setTimeout(() => {
             formScreen.style.opacity = '1';
             formScreen.style.transform = 'scale(1) translateY(0)';
-            isFlying = false;
+            isWalking = false;
           }, 100);
         }, 400);
       }
