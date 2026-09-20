@@ -11,11 +11,12 @@
 
   <style>
     :root {
-      --space-black: #010309;
+      --space-black: #010207;
       --neon-cyan: #00f0ff;
-      --neon-blue: #0070f3;
-      --neon-magenta: #ff0070;
-      --panel-glass: rgba(6, 12, 26, 0.82);
+      --neon-magenta: #ff007f;
+      --neon-gold: #ffd700;
+      --neon-violet: #bf00ff;
+      --panel-glass: rgba(5, 10, 24, 0.82);
       --border-cyan: rgba(0, 240, 255, 0.4);
     }
 
@@ -40,7 +41,6 @@
       position: relative;
     }
 
-    /* Kanvas 3D Three.js Penuh */
     #warp-canvas {
       position: fixed;
       top: 0;
@@ -51,16 +51,15 @@
       pointer-events: auto;
     }
 
-    /* Kad Antaramuka Kaca HUD */
     .viewport-box {
       width: 100%;
       max-width: 480px;
       background: var(--panel-glass);
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border-radius: 22px;
       border: 1px solid var(--border-cyan);
-      box-shadow: 0 0 35px rgba(0, 240, 255, 0.22), 0 0 70px rgba(255, 0, 112, 0.15);
+      box-shadow: 0 0 35px rgba(0, 240, 255, 0.25), 0 0 75px rgba(191, 0, 255, 0.18);
       position: relative;
       z-index: 2;
       overflow: hidden;
@@ -153,14 +152,14 @@
       letter-spacing: 1.5px;
       text-transform: uppercase;
       cursor: pointer;
-      box-shadow: 0 0 20px rgba(0, 240, 255, 0.35), inset 0 0 15px rgba(0, 240, 255, 0.2);
+      box-shadow: 0 0 22px rgba(0, 240, 255, 0.35), inset 0 0 15px rgba(0, 240, 255, 0.2);
       transition: all 0.3s;
     }
 
     .gateway-btn:hover {
       background: var(--neon-cyan);
-      color: #010309;
-      box-shadow: 0 0 32px rgba(0, 240, 255, 0.65);
+      color: #010207;
+      box-shadow: 0 0 35px rgba(0, 240, 255, 0.7);
     }
 
     /* ================= 1. TELEMETRY & WARP HUD ================= */
@@ -212,7 +211,7 @@
     .progress-bar-inner {
       width: 0%;
       height: 100%;
-      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta));
+      background: linear-gradient(90deg, var(--neon-cyan), var(--neon-magenta), var(--neon-gold));
       box-shadow: 0 0 10px var(--neon-cyan);
     }
 
@@ -288,7 +287,7 @@
       width: 100%;
       padding: 13px;
       margin-top: 6px;
-      background: linear-gradient(135deg, #00f0ff 0%, #0070f3 50%, #ff0070 100%);
+      background: linear-gradient(135deg, #00f0ff 0%, #bf00ff 50%, #ff007f 100%);
       border: none;
       border-radius: 8px;
       color: #ffffff;
@@ -322,7 +321,6 @@
 </head>
 <body>
 
-<!-- Three.js Canvas -->
 <canvas id="warp-canvas"></canvas>
 
 <div class="viewport-box" id="main-panel">
@@ -335,23 +333,23 @@
   <div id="start-gateway">
     <svg class="portal-emblem" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
       <circle cx="50" cy="50" r="42" stroke="#00f0ff" stroke-width="2.5" stroke-dasharray="8 6"/>
-      <circle cx="50" cy="50" r="28" stroke="#ff0070" stroke-width="2"/>
+      <circle cx="50" cy="50" r="28" stroke="#bf00ff" stroke-width="2"/>
       <circle cx="50" cy="50" r="14" fill="#00f0ff" opacity="0.6"/>
     </svg>
     <div class="status-badge">
       <div class="live-dot"></div>
-      <span>QUANTUM PORTAL // STANDBY</span>
+      <span>QUANTUM WARP ENGINE // READY</span>
     </div>
     <div class="gateway-title">PENDAFTARAN KELAS AI</div>
-    <div class="gateway-desc">Aktifkan terowong data kuantum untuk memasuki portal pendaftaran Miracle Life Technology.</div>
-    <button class="gateway-btn" onclick="engageWarpDrive()">Daftar Sekarang</button>
+    <div class="gateway-desc">Masuki portal akselerasi kuantum untuk bergabung ke ekosistem Miracle Life Technology.</div>
+    <button class="gateway-btn" onclick="engageChromaticWarp()">Daftar Sekarang</button>
   </div>
 
-  <!-- WARP DRIVE TELEMETRY HUD -->
+  <!-- WARP HUD -->
   <div id="warp-hud">
-    <div class="hud-title">WARP DRIVE // ENGAGED</div>
-    <div class="holo-text" id="holo-status">ACCELERATING TO WARP SPEED...</div>
-    <div class="holo-sub" id="holo-sub">TRAVERSING QUANTUM DATA TUNNEL</div>
+    <div class="hud-title">WARP CORE // ENGAGED</div>
+    <div class="holo-text" id="holo-status">TRAVERSING QUANTUM CONTINUUM...</div>
+    <div class="holo-sub" id="holo-sub">WARP VELOCITY: WARP 9.92 ACTIVE</div>
     <div class="progress-bar-wrap">
       <div class="progress-bar-inner" id="progress-bar"></div>
     </div>
@@ -392,7 +390,7 @@
 </div>
 
 <script>
-  /* ================= 1. THREE.JS 3D WARP SPEED PORTAL ================= */
+  /* ================= 1. THREE.JS CHROMATIC WARP ENGINE ================= */
   const canvas = document.getElementById('warp-canvas');
   const scene = new THREE.Scene();
   
@@ -403,54 +401,54 @@
   renderer.setSize(window.innerWidth, window.innerHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-  // 1.1 SISTEM ZARAH WARP STREAKS (GARISAN KELAJUAN CAHAYA)
-  const starCount = 1400;
+  // 1.1 PARTIKEL BINTANG KROMATIK
+  const starCount = 1500;
   const starGeo = new THREE.BufferGeometry();
   const starPositions = new Float32Array(starCount * 3);
-  const starSpeeds = new Float32Array(starCount);
 
   for (let i = 0; i < starCount * 3; i += 3) {
     starPositions[i] = (Math.random() - 0.5) * 80;
     starPositions[i + 1] = (Math.random() - 0.5) * 80;
-    starPositions[i + 2] = (Math.random() - 0.5) * 120;
-    starSpeeds[i / 3] = Math.random() * 0.4 + 0.2;
+    starPositions[i + 2] = (Math.random() - 0.5) * 130;
   }
   starGeo.setAttribute('position', new THREE.BufferAttribute(starPositions, 3));
 
   const starMat = new THREE.PointsMaterial({
     color: 0x00f0ff,
-    size: 0.35,
+    size: 0.36,
     transparent: true,
     opacity: 0.85
   });
   const starField = new THREE.Points(starGeo, starMat);
   scene.add(starField);
 
-  // 1.2 GELANG TENAGA TEROWONG KUANTUM (TUNNEL SHOCKWAVE RINGS)
+  // 1.2 CINCIN ENERGI SPIRAL (CHROMA SHOCKWAVE RINGS)
   const ringGroup = new THREE.Group();
-  const ringCount = 12;
+  const ringCount = 14;
   const rings = [];
 
   for (let i = 0; i < ringCount; i++) {
-    const rGeo = new THREE.TorusGeometry(8.5, 0.05, 16, 80);
+    const rGeo = new THREE.TorusGeometry(8.5, 0.06, 16, 80);
+    const initialColor = (i % 2 === 0) ? 0x00f0ff : 0xbf00ff;
     const rMat = new THREE.MeshBasicMaterial({
-      color: (i % 2 === 0) ? 0x00f0ff : 0xff0070,
+      color: initialColor,
       transparent: true,
-      opacity: 0.25
+      opacity: 0.3
     });
     const ringMesh = new THREE.Mesh(rGeo, rMat);
-    ringMesh.position.z = -i * 10;
+    ringMesh.position.z = -i * 9;
     ringGroup.add(ringMesh);
     rings.push(ringMesh);
   }
   scene.add(ringGroup);
 
-  // Parameter Kawalan Dinamik Kelajuan
-  let currentWarpSpeed = 0.25; // Kelajuan bersiap sedia
+  // Parameter Animasi
+  let currentWarpSpeed = 0.25;
   let targetWarpSpeed = 0.25;
-  let tunnelRotationSpeed = 0.005;
+  let rotationSpeed = 0.005;
+  let colorProgress = 0;
 
-  // Interaksi Gerakan Sentuhan / Tetikus
+  // Gerakan Kamera Paralaks
   let mouseX = 0, mouseY = 0;
   window.addEventListener('mousemove', (e) => {
     mouseX = (e.clientX / window.innerWidth - 0.5) * 2;
@@ -469,44 +467,43 @@
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
 
-  // GELUNG ANIMASI 3D (WARP LOOP)
+  // LOOP ANIMASI 3D
   function animate3D() {
     requestAnimationFrame(animate3D);
 
-    // Peralihan kelajuan secara licin (interpolation)
     currentWarpSpeed += (targetWarpSpeed - currentWarpSpeed) * 0.08;
 
-    // Pergerakan Zarah Cahaya Meluru ke Skrin
+    // Pergerakan Partikel Menembus Layar
     const positions = starField.geometry.attributes.position.array;
     for (let i = 2; i < starCount * 3; i += 3) {
       positions[i] += currentWarpSpeed;
       if (positions[i] > 25) {
-        positions[i] = -90;
+        positions[i] = -95;
         positions[i - 2] = (Math.random() - 0.5) * 80;
         positions[i - 1] = (Math.random() - 0.5) * 80;
       }
     }
     starField.geometry.attributes.position.needsUpdate = true;
 
-    // Gelang Terowong Bergerak ke Hadapan & Berputar
-    ringGroup.rotation.z += tunnelRotationSpeed;
-    rings.forEach(ring => {
-      ring.position.z += currentWarpSpeed * 0.8;
+    // Putaran dan Posisi Cincin Terowong
+    ringGroup.rotation.z += rotationSpeed;
+    rings.forEach((ring, idx) => {
+      ring.position.z += currentWarpSpeed * 0.85;
       if (ring.position.z > 25) {
         ring.position.z = -95;
       }
     });
 
-    // Kamera Condong Mengikut Sentuhan
-    camera.position.x += (mouseX * 2.5 - camera.position.x) * 0.05;
-    camera.position.y += (-mouseY * 2.5 - camera.position.y) * 0.05;
+    // Kamera Mengikuti Sentuhan
+    camera.position.x += (mouseX * 2.2 - camera.position.x) * 0.05;
+    camera.position.y += (-mouseY * 2.2 - camera.position.y) * 0.05;
     camera.lookAt(0, 0, 0);
 
     renderer.render(scene, camera);
   }
   animate3D();
 
-  /* ================= 2. AUDIO & PECUTAN HIPERSPACE ================= */
+  /* ================= 2. PROCEDURAL 3-LAYER AUDIO SYSTEM ================= */
   let audioCtx = null;
   function getAudio() {
     if (!audioCtx) {
@@ -517,35 +514,75 @@
     return audioCtx;
   }
 
-  // Bunyi Lonjakan Enjin Warp Drive (Sintesis Kuantum Dinamik)
-  function playWarpSound() {
+  function playHighTechWarpSound() {
     try {
       const ctx = getAudio();
       if (!ctx) return;
+      const now = ctx.currentTime;
 
-      const osc = ctx.createOscillator();
-      const gain = ctx.createGain();
+      // LAPISAN 1: Sub-Bass Rumble (Getaran Mesin Berat)
+      const subOsc = ctx.createOscillator();
+      const subGain = ctx.createGain();
+      subOsc.type = 'sawtooth';
+      subOsc.frequency.setValueAtTime(55, now);
+      subOsc.frequency.linearRampToValueAtTime(95, now + 1.8);
+      subGain.gain.setValueAtTime(0.01, now);
+      subGain.gain.linearRampToValueAtTime(0.08, now + 0.8);
+      subGain.gain.exponentialRampToValueAtTime(0.001, now + 2.4);
+      subOsc.connect(subGain);
+      subGain.connect(ctx.destination);
+      subOsc.start(now);
+      subOsc.stop(now + 2.4);
 
-      osc.type = 'sawtooth';
-      osc.frequency.setValueAtTime(100, ctx.currentTime);
-      // Frekuensi melonjak daripada 100Hz hingga 1800Hz
-      osc.frequency.exponentialRampToValueAtTime(1800, ctx.currentTime + 1.8);
+      // LAPISAN 2: Hyperdrive Sine Sweep (Peningkatan Nada Kecepatan Cahaya)
+      const sweepOsc = ctx.createOscillator();
+      const sweepGain = ctx.createGain();
+      sweepOsc.type = 'sine';
+      sweepOsc.frequency.setValueAtTime(140, now);
+      sweepOsc.frequency.exponentialRampToValueAtTime(2600, now + 1.9);
+      sweepGain.gain.setValueAtTime(0.01, now);
+      sweepGain.gain.linearRampToValueAtTime(0.06, now + 1.2);
+      sweepGain.gain.exponentialRampToValueAtTime(0.001, now + 2.3);
+      sweepOsc.connect(sweepGain);
+      sweepGain.connect(ctx.destination);
+      sweepOsc.start(now);
+      sweepOsc.stop(now + 2.3);
 
-      gain.gain.setValueAtTime(0.01, ctx.currentTime);
-      gain.gain.linearRampToValueAtTime(0.06, ctx.currentTime + 1.0);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 2.2);
+      // LAPISAN 3: White Noise Supersonic Whoosh (Desingan Udara Antariksa)
+      const bufferSize = ctx.sampleRate * 2.2;
+      const noiseBuffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        output[i] = Math.random() * 2 - 1;
+      }
 
-      osc.connect(gain);
-      gain.connect(ctx.destination);
+      const whiteNoise = ctx.createBufferSource();
+      whiteNoise.buffer = noiseBuffer;
 
-      osc.start(ctx.currentTime);
-      osc.stop(ctx.currentTime + 2.2);
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(200, now);
+      filter.frequency.exponentialRampToValueAtTime(3200, now + 1.6);
+      filter.Q.value = 3.0;
+
+      const noiseGain = ctx.createGain();
+      noiseGain.gain.setValueAtTime(0.005, now);
+      noiseGain.gain.linearRampToValueAtTime(0.05, now + 1.4);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 2.2);
+
+      whiteNoise.connect(filter);
+      filter.connect(noiseGain);
+      noiseGain.connect(ctx.destination);
+
+      whiteNoise.start(now);
+      whiteNoise.stop(now + 2.2);
     } catch(e) {}
   }
 
-  function engageWarpDrive() {
+  /* ================= 3. CHROMATIC WARP ACTIVATION ================= */
+  function engageChromaticWarp() {
     getAudio();
-    playWarpSound();
+    playHighTechWarpSound();
 
     const gateway = document.getElementById('start-gateway');
     const warpHud = document.getElementById('warp-hud');
@@ -553,10 +590,23 @@
     const holoStatus = document.getElementById('holo-status');
     const holoSub = document.getElementById('holo-sub');
 
-    // Pecutan Warp Drive Dimulakan
-    targetWarpSpeed = 5.5; // Kelajuan ekstrem hiperangkasa
-    tunnelRotationSpeed = 0.05;
-    starMat.size = 0.65; // Zarah memanjang bercahaya
+    // Kecepatan Puncak
+    targetWarpSpeed = 6.2;
+    rotationSpeed = 0.06;
+    starMat.size = 0.75;
+
+    // Transisi Warna Dinamis GSAP (Cyan -> Violet -> Magenta -> Emas)
+    const colorProxy = { hue: 0.5 }; // Mulai di Cyan (180 deg)
+    gsap.to(colorProxy, {
+      hue: 0.82, // Bergeser ke Violet/Magenta
+      duration: 1.4,
+      onUpdate: () => {
+        starMat.color.setHSL(colorProxy.hue, 1.0, 0.6);
+        rings.forEach((ring, i) => {
+          ring.material.color.setHSL((colorProxy.hue + i * 0.04) % 1.0, 1.0, 0.55);
+        });
+      }
+    });
 
     gateway.style.display = 'none';
     warpHud.style.display = 'flex';
@@ -566,26 +616,35 @@
       percent += 2;
       progressBar.style.width = percent + '%';
 
-      if (percent === 40) {
-        holoStatus.innerText = 'QUANTUM HORIZON REACHED';
-        holoSub.innerText = 'PASSING LIGHTSPEED THRESHOLD (WARP 9.8)...';
+      if (percent === 38) {
+        holoStatus.innerText = 'APPROACHING QUANTUM HORIZON';
+        holoSub.innerText = 'VELOCITY: 88,400 KM/S (SUPERLUMINAL)';
       }
-      if (percent === 78) {
-        holoStatus.innerText = 'DECELERATING TO ADMISSION SECTOR';
-        holoSub.innerText = 'PORTAL DESTINATION LOCKED...';
-        // Mula memperlahankan kelajuan
+      if (percent === 75) {
+        holoStatus.innerText = 'INITIATING BRAKING BURN';
+        holoSub.innerText = 'DECELERATING TO ADMISSION SECTOR...';
         targetWarpSpeed = 1.2;
+
+        // Bergeser ke Emas Neon saat pengereman
+        gsap.to(colorProxy, {
+          hue: 0.12,
+          duration: 0.8,
+          onUpdate: () => {
+            starMat.color.setHSL(colorProxy.hue, 1.0, 0.6);
+          }
+        });
       }
 
       if (percent >= 100) {
         clearInterval(interval);
-        holoStatus.innerText = 'DESTINATION REACHED // WELCOME CADET';
-        holoSub.innerText = 'OPENING ENROLLMENT INTERFACE...';
+        holoStatus.innerText = 'DESTINATION REACHED // ACCESS GRANTED';
+        holoSub.innerText = 'WELCOME TO MIRACLE LIFE TECH ADMISSION';
 
-        // Kelajuan kembali normal
-        targetWarpSpeed = 0.35;
-        starMat.size = 0.35;
-        tunnelRotationSpeed = 0.006;
+        // Kembalikan ke kecepatan normal dan warna stabil
+        targetWarpSpeed = 0.28;
+        starMat.size = 0.36;
+        rotationSpeed = 0.005;
+        starMat.color.setHex(0x00f0ff);
 
         setTimeout(() => {
           warpHud.style.display = 'none';
@@ -595,12 +654,12 @@
             formScreen.style.opacity = '1';
             formScreen.style.transform = 'translateY(0)';
           }, 50);
-        }, 550);
+        }, 500);
       }
-    }, 35);
+    }, 34);
   }
 
-  /* ================= 3. PENGHANTARAN BORANG KE APPS SCRIPT (NO-CORS) ================= */
+  /* ================= 4. SUBMIT FUNCTION (NO-CORS TO APPS SCRIPT) ================= */
   function submitForm(e) {
     e.preventDefault();
     const btn = document.getElementById('btn-submit');
