@@ -399,13 +399,13 @@
   const blackHoleGroup = new THREE.Group();
   scene.add(blackHoleGroup);
 
-  // Sfera Pusat
+  // Sfera Pusat (Event Horizon)
   const holeGeo = new THREE.SphereGeometry(3.2, 48, 48);
   const holeMat = new THREE.MeshBasicMaterial({ color: 0x000000 });
   const blackHole = new THREE.Mesh(holeGeo, holeMat);
   blackHoleGroup.add(blackHole);
 
-  // Gelang Foton Cahaya
+  // Gelang Foton Cahaya (Photon Ring)
   const photonGeo = new THREE.RingGeometry(3.22, 3.48, 64);
   const photonMat = new THREE.MeshBasicMaterial({
     color: 0xffe29a,
@@ -416,7 +416,7 @@
   const photonRing = new THREE.Mesh(photonGeo, photonMat);
   blackHoleGroup.add(photonRing);
 
-  // Cakera Akresi Plasma
+  // Cakera Akresi Plasma (Accretion Disk)
   const diskParticleCount = 3000;
   const diskGeo = new THREE.BufferGeometry();
   const diskPositions = new Float32Array(diskParticleCount * 3);
@@ -503,14 +503,15 @@
     renderer.setSize(window.innerWidth, window.innerHeight);
   });
 
-  let diskSpinSpeed = 0.008;
+  // KELAJUAN DIPERLAHANKAN KEPADA 0.0032 (SEBELUM INI 0.008)
+  let diskSpinSpeed = 0.0032;
 
   function animate() {
     requestAnimationFrame(animate);
 
     accretionDisk.rotation.y += diskSpinSpeed;
     photonRing.lookAt(camera.position);
-    starField.rotation.y += 0.0002;
+    starField.rotation.y += 0.0001;
 
     if (!isTraversing) {
       camera.position.x += (mouseX * 2.0 - camera.position.x) * 0.04;
@@ -522,65 +523,68 @@
   }
   animate();
 
-  /* ================= 2. AUDIO KOSMIK DENGUNGAN GRAVITI ================= */
+  /* ================= 2. AUDIO KOSMIK DINAMIK YANG DIJAMIN BERBUNYI DI TELEFON ================= */
   let audioCtx = null;
-  function initAudio() {
-    if (!audioCtx) {
-      const AudioClass = window.AudioContext || window.webkitAudioContext;
-      if (AudioClass) audioCtx = new AudioClass();
-    }
-    if (audioCtx && audioCtx.state === 'suspended') {
-      audioCtx.resume();
-    }
-    return audioCtx;
-  }
-
-  function playCosmicSwell() {
+  function triggerCosmicEntryAudio() {
     try {
-      const ctx = initAudio();
-      if (!ctx) return;
-      const now = ctx.currentTime;
+      const AudioClass = window.AudioContext || window.webkitAudioContext;
+      if (!audioCtx) audioCtx = new AudioClass();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
 
-      // Osilator 1: Nada Utama Rendah (Sine)
-      const osc1 = ctx.createOscillator();
-      const gain1 = ctx.createGain();
-      osc1.type = 'sine';
-      osc1.frequency.setValueAtTime(65, now);
-      osc1.frequency.exponentialRampToValueAtTime(140, now + 2.2);
+      const now = audioCtx.currentTime;
 
-      gain1.gain.setValueAtTime(0.01, now);
-      gain1.gain.linearRampToValueAtTime(0.2, now + 1.2); // Volum jelas kedengaran
-      gain1.gain.exponentialRampToValueAtTime(0.001, now + 2.8);
+      // 1. DENGUNGAN GRAVITI NAIK (Audible Sine Sweep: 160Hz -> 380Hz)
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(160, now);
+      osc.frequency.exponentialRampToValueAtTime(380, now + 1.8);
 
-      osc1.connect(gain1);
-      gain1.connect(ctx.destination);
-      osc1.start(now);
-      osc1.stop(now + 2.8);
+      gain.gain.setValueAtTime(0.01, now);
+      gain.gain.linearRampToValueAtTime(0.28, now + 0.8);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 2.3);
 
-      // Osilator 2: Gemuruh Graviti (Triangle Sub)
-      const osc2 = ctx.createOscillator();
-      const gain2 = ctx.createGain();
-      osc2.type = 'triangle';
-      osc2.frequency.setValueAtTime(40, now);
-      osc2.frequency.linearRampToValueAtTime(80, now + 2.2);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(now);
+      osc.stop(now + 2.3);
 
-      gain2.gain.setValueAtTime(0.01, now);
-      gain2.gain.linearRampToValueAtTime(0.15, now + 1.4);
-      gain2.gain.exponentialRampToValueAtTime(0.001, now + 2.8);
+      // 2. KESAN DERUAN PUSARAN ANGKASA (Filtered Harmonic Resonance)
+      const noiseBuffer = audioCtx.createBuffer(1, audioCtx.sampleRate * 2.2, audioCtx.sampleRate);
+      const output = noiseBuffer.getChannelData(0);
+      for (let i = 0; i < noiseBuffer.length; i++) {
+        output[i] = (Math.random() * 2 - 1) * 0.3;
+      }
+      const noise = audioCtx.createBufferSource();
+      noise.buffer = noiseBuffer;
 
-      osc2.connect(gain2);
-      gain2.connect(ctx.destination);
-      osc2.start(now);
-      osc2.stop(now + 2.8);
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.setValueAtTime(250, now);
+      filter.frequency.exponentialRampToValueAtTime(950, now + 1.6);
+      filter.Q.value = 2.5;
+
+      const noiseGain = audioCtx.createGain();
+      noiseGain.gain.setValueAtTime(0.01, now);
+      noiseGain.gain.linearRampToValueAtTime(0.18, now + 0.9);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, now + 2.1);
+
+      noise.connect(filter);
+      filter.connect(noiseGain);
+      noiseGain.connect(audioCtx.destination);
+
+      noise.start(now);
+      noise.stop(now + 2.1);
+
     } catch(e) {
-      console.log('Audio error:', e);
+      console.log('Audio playback error:', e);
     }
   }
 
-  /* ================= 3. TRANSISI MASUK & KIRAAN LOADING 0-100% ================= */
+  /* ================= 3. TRANSISI MASUK KE LOHONG HITAM ================= */
   function enterBlackHole() {
-    initAudio();
-    playCosmicSwell();
+    // Jalankan bunyi serta-merta pada detik interaksi butang
+    triggerCosmicEntryAudio();
 
     isTraversing = true;
     const gateway = document.getElementById('start-gateway');
@@ -594,7 +598,7 @@
     gateway.style.display = 'none';
     warpHud.style.display = 'flex';
 
-    // Pecutan Kamera Menembusi Pusat
+    // Pecutan Kamera Masuk Ke Tengah
     gsap.to(camera.position, {
       z: 0.5,
       y: 0,
@@ -603,8 +607,9 @@
       ease: 'power3.in'
     });
 
-    gsap.to({ speed: 0.008 }, {
-      speed: 0.08,
+    // Hadkan pecutan maksimum putaran zarah kepada 0.024 (sebelum ini 0.08)
+    gsap.to({ speed: 0.0032 }, {
+      speed: 0.024,
       duration: 2.2,
       onUpdate: function() {
         diskSpinSpeed = this.targets()[0].speed;
@@ -614,8 +619,6 @@
     let currentPercent = 0;
     const interval = setInterval(() => {
       currentPercent += 2;
-      
-      // Kemas kini angka peratusan dan bar progres secara masa nyata
       percentVal.innerText = currentPercent + '%';
       progressBar.style.width = currentPercent + '%';
 
@@ -634,7 +637,6 @@
         holoStatus.innerText = 'TRAVERSAL COMPLETE';
         holoSub.innerText = 'WELCOME TO MIRACLE LIFE TECHNOLOGY';
 
-        // Kilauan Cahaya Putih (White Hole Emergence)
         flash.style.opacity = '1';
 
         setTimeout(() => {
@@ -657,7 +659,7 @@
 
         }, 400);
       }
-    }, 40); // 40ms * 50 ticks = ~2.0 saat masa pemuatan
+    }, 40);
   }
 
   /* ================= 4. PENGHANTARAN BORANG (NO-CORS) ================= */
